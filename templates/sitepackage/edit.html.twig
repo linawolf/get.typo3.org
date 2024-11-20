@@ -1,0 +1,14 @@
+{% extends '@Template/layout.html.twig' %}
+{% block title %}Edit your TYPO3 Sitepackage configuration{% endblock %}
+{% block body %}
+
+    {% frame with { color: 'dark', height: 'small', center: true, indent: true, backgroundImage: asset("assets/Images/keyvisual.png") } %}
+        <h1>Edit your Configuration</h1>
+    {% endframe %}
+
+    {% frame with { indent: true } %}
+        <h2>Configuration</h2>
+        {{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {% endframe %}
+
+{% endblock %}
