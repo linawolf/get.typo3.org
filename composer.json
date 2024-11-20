@@ -20,6 +20,10 @@
 		{
 			"name": "Susanne Moog",
 			"email": "susanne.moog@typo3.com"
+		},
+		{
+			"name": "Benjamin Kott",
+			"email": "benjamin.kott@typo3.com"
 		}
 	],
 	"homepage": "https://get.typo3.org",
@@ -35,6 +39,7 @@
 		"ext-iconv": "*",
 		"ext-json": "*",
 		"ext-sqlite3": "*",
+		"ext-zip": "*",
 		"ext-zlib": "*",
 		"composer/semver": "^3.3",
 		"doctrine/collections": "^1.6",
