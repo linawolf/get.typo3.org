@@ -29,7 +29,6 @@ use App\Enum\RequirementCategoryEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Iterator;
 
 final class RequirementFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -68,7 +67,7 @@ final class RequirementFixtures extends Fixture implements DependentFixtureInter
     }
 
     /**
-     * @return Iterator<RequirementFixturesData>
+     * @return \Iterator<RequirementFixturesData>
      */
     protected function getData(): iterable
     {

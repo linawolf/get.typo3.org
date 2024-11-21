@@ -33,7 +33,6 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Exception;
 
 class CacheWarmupService implements CacheWarmerInterface
 {
@@ -156,7 +155,7 @@ class CacheWarmupService implements CacheWarmerInterface
 
                 try {
                     $promise->wait();
-                } catch (Exception $exception) {
+                } catch (\Exception $exception) {
                     $this->logger->warning($exception->getMessage(), $exception->getTrace());
                 }
             }

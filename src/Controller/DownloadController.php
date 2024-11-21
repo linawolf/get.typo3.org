@@ -25,14 +25,10 @@ namespace App\Controller;
 
 use App\Entity\Release;
 use App\Utility\VersionUtility;
-use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Throwable;
-
-use function sprintf;
 
 final class DownloadController extends AbstractController
 {
@@ -67,7 +63,7 @@ final class DownloadController extends AbstractController
         // Get information about version to download
         try {
             $redirectData = $this->getDownloadRedirect($requestedVersion, $requestedFormat);
-        } catch (Throwable) {
+        } catch (\Throwable) {
             throw $this->createNotFoundException();
         }
 
@@ -106,7 +102,7 @@ final class DownloadController extends AbstractController
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @return array{
      *   url: string,
@@ -131,7 +127,7 @@ final class DownloadController extends AbstractController
         $content = $this->legacyDataService->getReleaseJson();
         $releases = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($releases)) {
-            throw new InvalidArgumentException('Error while decoding the release json.', 1_638_038_670);
+            throw new \InvalidArgumentException('Error while decoding the release json.', 1_638_038_670);
         }
 
         // defaults
@@ -168,7 +164,7 @@ final class DownloadController extends AbstractController
         // named version detection
         if ($versionName === 'stable') {
             if (!isset($releases['latest_stable'])) {
-                throw new InvalidArgumentException('Invalid release json.', 1_638_038_671);
+                throw new \InvalidArgumentException('Invalid release json.', 1_638_038_671);
             }
 
             $versionName = $releases['latest_stable'];
@@ -184,7 +180,7 @@ final class DownloadController extends AbstractController
         if ($isValidVersion && in_array($format, ['tar.gz', 'zip', 'tar.gz.sig', 'zip.sig'], true)) {
             $branchName = (int)$versionParts[0] >= 7 ? $versionParts[0] : $versionParts[0] . '.' . $versionParts[1];
             if (!isset($releases[$branchName])) {
-                throw new InvalidArgumentException('Invalid release json.', 1_638_038_672);
+                throw new \InvalidArgumentException('Invalid release json.', 1_638_038_672);
             }
 
             $branch = $releases[$branchName];
@@ -220,8 +216,8 @@ final class DownloadController extends AbstractController
             }
         }
 
-        throw new InvalidArgumentException(
-            sprintf('No download found for version %s with format %s.', $versionName, $format),
+        throw new \InvalidArgumentException(
+            \sprintf('No download found for version %s with format %s.', $versionName, $format),
             1_660_745_735
         );
     }

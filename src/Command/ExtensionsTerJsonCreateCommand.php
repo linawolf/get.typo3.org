@@ -25,17 +25,11 @@ namespace App\Command;
 
 use Composer\Semver\Semver;
 use Composer\Semver\VersionParser;
-use DateTimeImmutable;
 use GuzzleHttp\Client;
-use RuntimeException;
-use SimpleXMLElement;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use function is_array;
-use function is_string;
 
 /**
  * @codeCoverageIgnore
@@ -83,12 +77,12 @@ class ExtensionsTerJsonCreateCommand extends Command
     private const ALIASES_FILE = 'aliases.json';
 
     /**
-     * @var array<int, SimpleXMLElement>
+     * @var array<int, \SimpleXMLElement>
      */
     protected array $extensions = [];
 
     /**
-     * @var array<string, SimpleXMLElement>
+     * @var array<string, \SimpleXMLElement>
      */
     protected array $extensionKeys = [];
 
@@ -199,7 +193,7 @@ class ExtensionsTerJsonCreateCommand extends Command
         /** @var string $outputDir */
         $outputDir = $input->getArgument('output-dir');
         if (($outputPath = realpath($outputDir)) === false) {
-            throw new RuntimeException(\sprintf('Path "%s" not found.', $outputDir), 1_660_250_640);
+            throw new \RuntimeException(\sprintf('Path "%s" not found.', $outputDir), 1_660_250_640);
         }
 
         $this->outputDir = $outputPath;
@@ -241,27 +235,27 @@ class ExtensionsTerJsonCreateCommand extends Command
         );
         $responseBody = $response->getBody()->getContents();
 
-        if (!is_array($json = \json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR))) {
-            throw new RuntimeException('Invalid response.', 1_660_251_247);
+        if (!\is_array($json = \json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR))) {
+            throw new \RuntimeException('Invalid response.', 1_660_251_247);
         }
 
         if ($json['meta'] !== null) {
-            throw new RuntimeException($json['meta']['error']);
+            throw new \RuntimeException($json['meta']['error']);
         }
 
-        if (is_array($json['data'])) {
+        if (\is_array($json['data'])) {
             // Assign core extensions
             foreach (self::$coreExtensions as $extKey => $composerName) {
                 $json['data'][$extKey]['composer_name'] = $composerName;
             }
 
             foreach ($json['data'] as $extKey => $settings) {
-                if (!is_string($extKey)) {
-                    throw new RuntimeException('Invalid extension key.', 1_660_251_470);
+                if (!\is_string($extKey)) {
+                    throw new \RuntimeException('Invalid extension key.', 1_660_251_470);
                 }
 
-                if (!is_string($settings['composer_name'])) {
-                    throw new RuntimeException('Invalid package name.', 1_660_251_471);
+                if (!\is_string($settings['composer_name'])) {
+                    throw new \RuntimeException('Invalid package name.', 1_660_251_471);
                 }
 
                 self::$abandonedExtensionKeys[$extKey] = $settings['composer_name'];
@@ -287,7 +281,7 @@ class ExtensionsTerJsonCreateCommand extends Command
     }
 
     /**
-     * @return SimpleXMLElement[]
+     * @return \SimpleXMLElement[]
      */
     protected function getExtensions(): array
     {
@@ -302,10 +296,10 @@ class ExtensionsTerJsonCreateCommand extends Command
                 ]
             );
             if (($extensionsXml = gzdecode($response->getBody()->getContents())) === false) {
-                throw new RuntimeException('Invalid response.', 1_660_251_597);
+                throw new \RuntimeException('Invalid response.', 1_660_251_597);
             }
 
-            $extensionsObject = new SimpleXMLElement($extensionsXml);
+            $extensionsObject = new \SimpleXMLElement($extensionsXml);
             $this->extensions = $extensionsObject->xpath('/extensions/extension');
             $this->initExtensionKeys($this->extensions);
         }
@@ -314,7 +308,7 @@ class ExtensionsTerJsonCreateCommand extends Command
     }
 
     /**
-     * @param SimpleXMLElement[] $extensions
+     * @param \SimpleXMLElement[] $extensions
      */
     protected function initExtensionKeys(array $extensions): void
     {
@@ -328,7 +322,7 @@ class ExtensionsTerJsonCreateCommand extends Command
     }
 
     /**
-     * @param SimpleXMLElement[] $extensions
+     * @param \SimpleXMLElement[] $extensions
      *
      * @return array<string, array<int|string, array<int|string, mixed[]>&mixed[]>&mixed[]>
      */
@@ -336,7 +330,7 @@ class ExtensionsTerJsonCreateCommand extends Command
     {
         $packages = [];
         //$quarter = mktime(0, 0, 0, floor((date('m') - 1) / 3) * 3 + 1, 1, date('Y'));
-        $dateTimeToday = new DateTimeImmutable();
+        $dateTimeToday = new \DateTimeImmutable();
         $new = $dateTimeToday->modify('yesterday')->getTimestamp();
 
         foreach ($extensions as $extension) {
@@ -410,7 +404,7 @@ class ExtensionsTerJsonCreateCommand extends Command
      *   dist: array<string, string>
      * }|array{}
      */
-    protected function getPackageArray(SimpleXMLElement $extension, SimpleXMLElement $version): array
+    protected function getPackageArray(\SimpleXMLElement $extension, \SimpleXMLElement $version): array
     {
         $extKey = (string)$extension['extensionkey'];
         $autoload = [
@@ -424,7 +418,7 @@ class ExtensionsTerJsonCreateCommand extends Command
         ];
         if ($version->composerinfo !== null) {
             $composerInfo = json_decode((string)$version->composerinfo, true, 512);
-            if (is_array($composerInfo) && is_array($composerInfo['autoload'] ?? null)) {
+            if (\is_array($composerInfo) && \is_array($composerInfo['autoload'] ?? null)) {
                 $autoload = $composerInfo['autoload'];
             }
         }
@@ -463,7 +457,7 @@ class ExtensionsTerJsonCreateCommand extends Command
 
         $dependencies = unserialize((string)$version->dependencies);
 
-        if (!is_array($dependencies)) {
+        if (!\is_array($dependencies)) {
             // Ignore extensions with invalid dependencies
             return [];
         }

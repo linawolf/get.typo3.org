@@ -38,12 +38,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
-use DateTime;
-use DateTimeImmutable;
-
-use function iterator_apply;
-use function iterator_to_array;
-use function is_string;
 
 abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
@@ -112,13 +106,13 @@ abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Contro
         if ($violations->count() > 0) {
             $messages = '';
 
-            iterator_apply(
+            \iterator_apply(
                 $violations,
                 static function (ConstraintViolationInterface $violation) use (&$messages): bool {
                     $messages .= \sprintf("%s: %s\n", $violation->getPropertyPath(), $violation->getMessage());
                     return true;
                 },
-                iterator_to_array($violations)
+                \iterator_to_array($violations)
             );
 
             throw new BadRequestHttpException(trim($messages));
@@ -137,12 +131,12 @@ abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Contro
         foreach ($metadata->getFieldNames() as $field) {
             $fieldName = $inflector->tableize($field);
 
-            if (array_key_exists($fieldName, $data) && is_string($data[$fieldName])) {
+            if (array_key_exists($fieldName, $data) && \is_string($data[$fieldName])) {
                 if (isset($metadata->fieldMappings[$field]['type'])) {
                     if ($metadata->fieldMappings[$field]['type'] == 'datetime') {
-                        $data[$fieldName] = new DateTime($data[$fieldName]);
+                        $data[$fieldName] = new \DateTime($data[$fieldName]);
                     } elseif ($metadata->fieldMappings[$field]['type'] == 'datetime_immutable') {
-                        $data[$fieldName] = new DateTimeImmutable($data[$fieldName]);
+                        $data[$fieldName] = new \DateTimeImmutable($data[$fieldName]);
                     }
                 }
 

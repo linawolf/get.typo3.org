@@ -26,10 +26,7 @@ namespace App\Tests\Functional\Controller\Web;
 use App\Tests\Functional\AbstractCase;
 use App\Tests\Functional\Fixtures\MajorVersionFixtures;
 use App\Tests\Functional\Fixtures\ReleaseFixtures;
-use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
-
-use function is_array;
 
 class JsonControllerTest extends AbstractCase
 {
@@ -50,11 +47,11 @@ class JsonControllerTest extends AbstractCase
         $response = $this->client->getResponse();
 
         if (($json = $response->getContent()) === false) {
-            throw new RuntimeException('Error no response content.', 1_657_642_832);
+            throw new \RuntimeException('Error no response content.', 1_657_642_832);
         }
 
-        if (!is_array($content = json_decode($json, true, 512, JSON_THROW_ON_ERROR))) {
-            throw new RuntimeException('Error array expected.', 1_657_642_833);
+        if (!\is_array($content = json_decode($json, true, 512, JSON_THROW_ON_ERROR))) {
+            throw new \RuntimeException('Error array expected.', 1_657_642_833);
         }
 
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());

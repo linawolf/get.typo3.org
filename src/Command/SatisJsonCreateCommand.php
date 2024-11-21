@@ -28,7 +28,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use RuntimeException;
 
 /**
  * @codeCoverageIgnore
@@ -75,7 +74,7 @@ class SatisJsonCreateCommand extends Command
         }
 
         if (!is_writable($configFile)) {
-            throw new RuntimeException(sprintf('File "%s" is not writable', $configFile), 1_438_441_994);
+            throw new \RuntimeException(sprintf('File "%s" is not writable', $configFile), 1_438_441_994);
         }
 
         $repositories = [
@@ -96,7 +95,7 @@ class SatisJsonCreateCommand extends Command
         $satis->useProviders();
 
         if (file_put_contents($configFile, (string)$satis) === false) {
-            throw new RuntimeException(sprintf('File "%s" could not be written, reason unknown', $configFile), 1_438_442_238);
+            throw new \RuntimeException(sprintf('File "%s" could not be written, reason unknown', $configFile), 1_438_442_238);
         }
 
         $output->writeln(sprintf('Successfully created "%s" with repository dir "%s"', $configFile, $repositoryDir));

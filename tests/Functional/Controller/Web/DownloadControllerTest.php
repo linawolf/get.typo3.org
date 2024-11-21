@@ -23,11 +23,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\Web;
 
+use App\Tests\Functional\AbstractCase;
 use App\Tests\Functional\Fixtures\MajorVersionFixtures;
 use App\Tests\Functional\Fixtures\ReleaseFixtures;
-use App\Tests\Functional\AbstractCase;
-use Symfony\Component\HttpFoundation\Response;
 use Iterator;
+use Symfony\Component\HttpFoundation\Response;
 
 class DownloadControllerTest extends AbstractCase
 {
@@ -66,7 +66,7 @@ class DownloadControllerTest extends AbstractCase
      *   expectedCode: int
      * }>
      */
-    public function webDownloadVersionDataProvider(): Iterator
+    public function webDownloadVersionDataProvider(): \Iterator
     {
         yield 'Sprint version' => [
             'requestVersion' => '10.0.0',

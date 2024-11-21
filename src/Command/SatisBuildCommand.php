@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use DateTimeImmutable;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -32,7 +31,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use RuntimeException;
 
 /**
  * @codeCoverageIgnore
@@ -99,12 +97,12 @@ class SatisBuildCommand extends Command
         /** @var bool $autoBuildAll */
         $autoBuildAll = $input->getOption('auto');
 
-        if ($autoBuildAll && (new DateTimeImmutable())->format('G') === '3') {
+        if ($autoBuildAll && (new \DateTimeImmutable())->format('G') === '3') {
             $buildAll = \true;
         }
 
         if (!($application = $this->getApplication()) instanceof Application) {
-            throw new RuntimeException('Application is not initialized.', 1_660_125_012);
+            throw new \RuntimeException('Application is not initialized.', 1_660_125_012);
         }
 
         // Run extensions:ter:json:create

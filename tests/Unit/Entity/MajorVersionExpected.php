@@ -23,17 +23,15 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Entity;
 
-use DateTimeImmutable;
-
 class MajorVersionExpected
 {
     public function __construct(
         public readonly float $version,
         public readonly string $title,
-        public readonly DateTimeImmutable $releaseDate,
-        public readonly ?DateTimeImmutable $regularMaintenanceUntil,
-        public readonly ?DateTimeImmutable $maintainedUntil,
-        public readonly ?DateTimeImmutable $eltsUntil,
+        public readonly \DateTimeImmutable $releaseDate,
+        public readonly ?\DateTimeImmutable $regularMaintenanceUntil,
+        public readonly ?\DateTimeImmutable $maintainedUntil,
+        public readonly ?\DateTimeImmutable $eltsUntil,
         public readonly bool $active,
         public readonly bool $elts,
     ) {}

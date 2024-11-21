@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Utility;
 
 use App\Utility\VersionUtility;
-use Iterator;
 use PHPUnit\Framework\TestCase;
 
 class VersionUtilityTest extends TestCase
@@ -41,9 +40,9 @@ class VersionUtilityTest extends TestCase
     }
 
     /**
-     * @return Iterator<string, array<int, float|string>>
+     * @return \Iterator<string, array<int, float|string>>
      */
-    public function extractMajorVersionNumberTestDataProvider(): Iterator
+    public function extractMajorVersionNumberTestDataProvider(): \Iterator
     {
         yield 'Minor 4' => ['4.5', 4.5];
         yield 'Patch 4' => ['4.5.35', 4.5];
@@ -70,9 +69,9 @@ class VersionUtilityTest extends TestCase
     }
 
     /**
-     * @return Iterator<string, array<bool|string>>
+     * @return \Iterator<string, array<bool|string>>
      */
-    public function isValidSemverVersionTestDataProvider(): Iterator
+    public function isValidSemverVersionTestDataProvider(): \Iterator
     {
         yield 'Patch 6' => ['6.2.0', true];
         yield 'Dev 6' => ['6.99.99-dev', true];

@@ -35,8 +35,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-use function array_keys;
-
 /**
  * Regular content and download pages.
  */
@@ -176,7 +174,7 @@ final class DefaultController extends AbstractController
                 throw new BadRequestHttpException('Missing or invalid request body.');
             }
 
-            $keys = preg_replace('#^(typo3)-#', '$1/', array_keys($formData));
+            $keys = preg_replace('#^(typo3)-#', '$1/', \array_keys($formData));
             if (!is_array($keys)) {
                 throw new BadRequestHttpException('Missing or invalid request body.');
             }

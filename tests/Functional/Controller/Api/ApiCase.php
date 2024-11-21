@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller\Api;
 
 use App\Tests\Functional\AbstractCase;
-use LogicException;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApiCase extends AbstractCase
@@ -34,7 +33,7 @@ class ApiCase extends AbstractCase
         $contents = file_get_contents($fileName);
 
         if ($contents === false) {
-            throw new LogicException(sprintf('Fixture "%s" not accessible', $fileName));
+            throw new \LogicException(sprintf('Fixture "%s" not accessible', $fileName));
         }
 
         return $contents;

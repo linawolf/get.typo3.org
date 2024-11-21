@@ -36,7 +36,7 @@ class ChangeHighlighter extends AbstractExtension
         return [
             new TwigFilter(
                 'changehighlighter',
-                fn (string $changeList): ?string => $this->highlightChanges($changeList)
+                fn(string $changeList): ?string => $this->highlightChanges($changeList)
             ),
         ];
     }

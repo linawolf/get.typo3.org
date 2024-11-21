@@ -28,7 +28,6 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use LogicException;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Panther\PantherTestCase;
@@ -53,7 +52,7 @@ abstract class AbstractCase extends PantherTestCase
     {
         $userProvider = static::getContainer()->get(UserProviderInterface::class);
         if (!$userProvider instanceof UserProviderInterface) {
-            throw new LogicException('UserProvider instance is not a UserProviderInterface');
+            throw new \LogicException('UserProvider instance is not a UserProviderInterface');
         }
 
         $testUser = $userProvider->loadUserByIdentifier('test-user');
@@ -80,12 +79,12 @@ abstract class AbstractCase extends PantherTestCase
         if ($this->fixtureExecutor === null) {
             $managerRegistry = static::getContainer()->get('doctrine');
             if (!$managerRegistry instanceof ManagerRegistry) {
-                throw new LogicException('Doctrine instance is not a ManagerRegistry');
+                throw new \LogicException('Doctrine instance is not a ManagerRegistry');
             }
 
             $entityManager = $managerRegistry->getManager();
             if (!$entityManager instanceof EntityManagerInterface) {
-                throw new LogicException('Manager instance is not a EntityManagerInterface');
+                throw new \LogicException('Manager instance is not a EntityManagerInterface');
             }
 
             $this->fixtureExecutor = new ORMExecutor($entityManager, new ORMPurger($entityManager));

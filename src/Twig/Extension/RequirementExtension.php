@@ -30,15 +30,6 @@ use Doctrine\Common\Collections\Collection;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-use function array_key_exists;
-use function implode;
-use function in_array;
-use function sprintf;
-use function substr;
-use function str_ends_with;
-
-use const null;
-
 class RequirementExtension extends AbstractExtension
 {
     /**
@@ -49,11 +40,11 @@ class RequirementExtension extends AbstractExtension
         return [
             new TwigFilter(
                 'prepareRequirements',
-                fn (Collection $requirements): array => $this->prepareRequirements($requirements)
+                fn(Collection $requirements): array => $this->prepareRequirements($requirements)
             ),
             new TwigFilter(
                 'prepareRequirementsShort',
-                fn (Collection $requirements): array => $this->prepareRequirementsShort($requirements)
+                fn(Collection $requirements): array => $this->prepareRequirementsShort($requirements)
             ),
         ];
     }
@@ -87,7 +78,7 @@ class RequirementExtension extends AbstractExtension
 
         foreach ($categories as $category => $categoryRequirements) {
             if (
-                array_key_exists(
+                \array_key_exists(
                     $category,
                     $result
                 )
@@ -120,10 +111,10 @@ class RequirementExtension extends AbstractExtension
                                 }
                             }
 
-                            $result[$requirement->getCategory()] = sprintf(
+                            $result[$requirement->getCategory()] = \sprintf(
                                 '%s %s',
                                 $requirement->getTitle(),
-                                implode(', ', $supportedVersions)
+                                \implode(', ', $supportedVersions)
                             );
                             break;
 
@@ -131,12 +122,12 @@ class RequirementExtension extends AbstractExtension
                             $result[$requirement->getCategory()] .= $result[$requirement->getCategory()] !== '' ? ' / ' : '';
                             $result[$requirement->getCategory()] .= $requirement->getTitle();
 
-                            if ($requirement->getMin() !== null) {
+                            if ($requirement->getMin() !== \null) {
                                 $version = VersionUtility::normalize($requirement->getMin(), 3) ?? '';
-                                if (str_ends_with($version, '.0')) {
-                                    $version = substr($version, 0, -2);
+                                if (\str_ends_with($version, '.0')) {
+                                    $version = \substr($version, 0, -2);
                                 }
-                                $result[$requirement->getCategory()] .= sprintf(
+                                $result[$requirement->getCategory()] .= \sprintf(
                                     '&nbsp;%s+',
                                     $version
                                 );
@@ -201,7 +192,7 @@ class RequirementExtension extends AbstractExtension
     {
         foreach ($requirements as &$requirement) {
             if (
-                in_array(
+                \in_array(
                     $requirement->getCategory(),
                     [
                         RequirementCategoryEnum::OPTION_PHP,
@@ -231,6 +222,6 @@ class RequirementExtension extends AbstractExtension
      */
     private function sortByTitleHelper(array &$data): void
     {
-        usort($data, static fn ($a, $b): int => strcasecmp($a->getTitle(), $b->getTitle()));
+        usort($data, static fn($a, $b): int => strcasecmp($a->getTitle(), $b->getTitle()));
     }
 }

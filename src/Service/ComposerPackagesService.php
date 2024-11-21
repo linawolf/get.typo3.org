@@ -32,12 +32,6 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-use RuntimeException;
-
-use function is_null;
-use function ltrim;
-use function preg_match;
-use function sprintf;
 
 final class ComposerPackagesService
 {
@@ -759,12 +753,12 @@ final class ComposerPackagesService
     {
         $majorVersion = $this->majorVersions->findLatestLtsComposerSupported();
         if (!$majorVersion instanceof MajorVersion) {
-            throw new RuntimeException('No LTS release with Composer support found.', 1_624_353_394);
+            throw new \RuntimeException('No LTS release with Composer support found.', 1_624_353_394);
         }
 
         $release = $majorVersion->getLatestRelease();
         if (!$release instanceof Release) {
-            throw new RuntimeException('No release found.', 1_624_353_494);
+            throw new \RuntimeException('No release found.', 1_624_353_494);
         }
 
         $versionChoices = [
@@ -789,7 +783,7 @@ final class ComposerPackagesService
 
         foreach ($versions as $version) {
             if (
-                $version->getLatestRelease() instanceof Release && preg_match(
+                $version->getLatestRelease() instanceof Release && \preg_match(
                     '#^(\d+)\.(\d+)\.(\d+)#',
                     $version->getLatestRelease()->getVersion(),
                     $matches
@@ -798,7 +792,7 @@ final class ComposerPackagesService
                 $nextMinor = $matches[1] . '.' . (((int)$matches[2]) + 1);
                 $nextPatch = $matches[1] . '.' . $matches[2] . '.' . (((int)$matches[3]) + 1);
 
-                if (is_null($version->getLatestRelease()->getMajorVersion()->getLts())) {
+                if (\is_null($version->getLatestRelease()->getMajorVersion()->getLts())) {
                     $versionChoices['choices'][self::SPECIAL_VERSIONS_GROUP]
                         [$version->getTitle() . ' - next minor release (' . $nextMinor . ')'] =
                         $this->getComposerVersionConstraint($nextMinor, true);
@@ -847,7 +841,7 @@ final class ComposerPackagesService
         $sanitizedBundles = [];
         foreach (self::BUNDLES as $bundleName => $packages) {
             $sanitizedBundles[$bundleName] = Utils::jsonEncode(
-                array_map(static fn ($name): string => str_replace('/', '-', $name), $packages)
+                array_map(static fn($name): string => str_replace('/', '-', $name), $packages)
             );
         }
 
@@ -863,21 +857,21 @@ final class ComposerPackagesService
     {
         $stability = 'stable';
 
-        if (is_string($version = $packages['typo3_version']) && preg_match('#^\^(\d+)#', $version, $matches) > 0) {
+        if (is_string($version = $packages['typo3_version']) && \preg_match('#^\^(\d+)#', $version, $matches) > 0) {
             $stability = VersionParser::parseStability($version);
             $majorVersion = (int)$matches[1];
         } else {
             $composerVersions = $this->majorVersions->findAllComposerSupported();
             if ($composerVersions === []) {
-                throw new RuntimeException('No release found.', 1_624_353_639);
+                throw new \RuntimeException('No release found.', 1_624_353_639);
             }
 
             $release = $composerVersions[0]->getLatestRelease();
             if (!$release instanceof Release) {
-                throw new RuntimeException('No release found.', 1_624_353_801);
+                throw new \RuntimeException('No release found.', 1_624_353_801);
             }
 
-            preg_match('#^\d+#', $release->getVersion(), $matches);
+            \preg_match('#^\d+#', $release->getVersion(), $matches);
             $majorVersion = (int)$matches[0];
         }
 
@@ -894,7 +888,7 @@ final class ComposerPackagesService
 
             if (array_key_exists($packageName, $packages) && $packages[$packageName] === true) {
                 if ($version !== '*' && $packageName === 'typo3/minimal') {
-                    $packageVersion = sprintf('^%s', $majorVersion);
+                    $packageVersion = \sprintf('^%s', $majorVersion);
                     if ($stability !== 'stable') {
                         $packageVersion .= '@' . $stability;
                     }
@@ -903,14 +897,14 @@ final class ComposerPackagesService
                 }
 
                 if ($version === '') {
-                    $composerPackages .= sprintf(' "%s"', $packageName);
+                    $composerPackages .= \sprintf(' "%s"', $packageName);
                 } else {
-                    $composerPackages .= sprintf(' "%s:%s"', $packageName, $packageVersion);
+                    $composerPackages .= \sprintf(' "%s:%s"', $packageName, $packageVersion);
                 }
             }
         }
 
-        $packages['composer_packages'] = ltrim($composerPackages);
+        $packages['composer_packages'] = \ltrim($composerPackages);
 
         return $packages;
     }
@@ -933,7 +927,7 @@ final class ComposerPackagesService
     {
         if ($development) {
             $result = '^' . $version . '@dev';
-        } elseif (preg_match('#^\d+\.\d+#', $version, $matches) > 0) {
+        } elseif (\preg_match('#^\d+\.\d+#', $version, $matches) > 0) {
             $result = '^' . $matches[0];
         } else {
             $result = '';

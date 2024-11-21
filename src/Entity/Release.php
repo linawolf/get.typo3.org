@@ -32,12 +32,6 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
-use JsonSerializable;
-use DateTimeInterface;
-use InvalidArgumentException;
-use DateTimeImmutable;
-use DateTime;
-use Stringable;
 
 /**
  * @OA\Schema(
@@ -47,7 +41,7 @@ use Stringable;
  */
 #[ORM\Entity(repositoryClass: ReleaseRepository::class)]
 #[ORM\EntityListeners([ReleaseListener::class])]
-class Release implements JsonSerializable, Stringable
+class Release implements \JsonSerializable, \Stringable
 {
     /**
      * Version in a semver/version_compare compatible format.
@@ -65,12 +59,12 @@ class Release implements JsonSerializable, Stringable
     /**
      * @OA\Property(example="2017-12-12T16:48:22+00:00")
      *
-     * @var DateTime|DateTimeImmutable
+     * @var \DateTime|\DateTimeImmutable
      */
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_MUTABLE)]
     #[Serializer\Groups(['data', 'content'])]
     #[Serializer\Type("DateTime<'Y-m-d\\TH:i:sP'>")]
-    private DateTimeInterface $date;
+    private \DateTimeInterface $date;
 
     #[Assert\Choice(callback: [ReleaseTypeEnum::class, 'getAvailableOptions'])]
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING)]
@@ -129,15 +123,15 @@ class Release implements JsonSerializable, Stringable
         return $this->releaseNotes;
     }
 
-    public function setDate(DateTime|DateTimeImmutable $date): void
+    public function setDate(\DateTime|\DateTimeImmutable $date): void
     {
         $this->date = $date;
     }
 
     /**
-     * @return DateTime|DateTimeImmutable
+     * @return \DateTime|\DateTimeImmutable
      */
-    public function getDate(): DateTimeInterface
+    public function getDate(): \DateTimeInterface
     {
         return $this->date;
     }
@@ -175,7 +169,7 @@ class Release implements JsonSerializable, Stringable
     public function setType(string $type): void
     {
         if (!in_array($type, ReleaseTypeEnum::getAvailableOptions(), true)) {
-            throw new InvalidArgumentException('Invalid type');
+            throw new \InvalidArgumentException('Invalid type');
         }
 
         $this->type = $type;

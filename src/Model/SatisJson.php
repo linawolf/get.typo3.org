@@ -23,15 +23,10 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use Stringable;
-use InvalidArgumentException;
-
-use function json_encode;
-
 /**
  * @codeCoverageIgnore
  */
-class SatisJson implements Stringable
+class SatisJson implements \Stringable
 {
     /**
      * @var array{
@@ -52,7 +47,7 @@ class SatisJson implements Stringable
     public function __construct($name)
     {
         if (!is_string($name)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'Argument "$name" must be of type "string", "%s" given',
                 gettype($name)
             ));
@@ -121,6 +116,6 @@ class SatisJson implements Stringable
             unset($this->data['require']);
         }
 
-        return (string)json_encode($this->data, JSON_PRETTY_PRINT);
+        return (string)\json_encode($this->data, JSON_PRETTY_PRINT);
     }
 }

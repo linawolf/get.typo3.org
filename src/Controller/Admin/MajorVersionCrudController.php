@@ -32,10 +32,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
-
-use function in_array;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class MajorVersionCrudController extends AbstractCrudController
 {
@@ -64,7 +62,7 @@ class MajorVersionCrudController extends AbstractCrudController
         yield TextField::new('title', 'Title');
         yield TextField::new('subtitle', 'Subtitle');
 
-        if (in_array($pageName, [Crud::PAGE_DETAIL, Crud::PAGE_EDIT, Crud::PAGE_NEW], true)) {
+        if (\in_array($pageName, [Crud::PAGE_DETAIL, Crud::PAGE_EDIT, Crud::PAGE_NEW], true)) {
             yield TextareaField::new('description', 'Description');
         }
 

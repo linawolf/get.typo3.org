@@ -27,12 +27,11 @@ use App\Entity\Sitepackage\Author;
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
-use JsonSerializable;
 
 /**
  * Sitepackage.
  */
-class Sitepackage implements JsonSerializable
+class Sitepackage implements \JsonSerializable
 {
     #[Assert\NotBlank]
     #[Assert\Choice(['bootstrap_package', 'fluid_styled_content'])]

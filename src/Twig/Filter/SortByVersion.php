@@ -36,7 +36,7 @@ class SortByVersion extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('sortByVersion', fn ($releases): array => $this->sort($releases)),
+            new TwigFilter('sortByVersion', fn($releases): array => $this->sort($releases)),
         ];
     }
 
@@ -48,7 +48,7 @@ class SortByVersion extends AbstractExtension
     public function sort(Collection $releases): array
     {
         $array = $releases->toArray();
-        usort($array, static fn ($a, $b): int => version_compare($b->getVersion(), $a->getVersion()));
+        usort($array, static fn($a, $b): int => version_compare($b->getVersion(), $a->getVersion()));
 
         return $array;
     }
