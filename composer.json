@@ -190,12 +190,6 @@
 			"@ci:static",
 			"@ci:dynamic"
 		],
-		"ci:composer": [
-			"@ci:composer:validate",
-			"@ci:composer:normalize"
-		],
-		"ci:composer:normalize": "@composer normalize --dry-run",
-		"ci:composer:validate": "@composer validate --strict",
 		"ci:dynamic": [
 			"@ci:tests"
 		],
@@ -211,7 +205,6 @@
 		"ci:php:sniff": "@php phpcs --standard=PSR12 src tests || true",
 		"ci:php:stan": "@php phpstan analyse --no-progress",
 		"ci:static": [
-			"@ci:composer",
 			"@ci:json:lint",
 			"@ci:yaml:lint",
 			"@ci:php"

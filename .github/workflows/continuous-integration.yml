@@ -43,7 +43,7 @@ jobs:
         run: composer install --prefer-dist --ansi --no-interaction --no-progress
 
       - name: Validate composer.json
-        run: composer ci:composer:validate
+        run: composer validate --strict
 
   json_lint:
     name: JSON Lint
