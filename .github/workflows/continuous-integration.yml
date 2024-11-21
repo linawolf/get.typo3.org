@@ -285,7 +285,6 @@ jobs:
       - yaml_lint
       - validation
       - php_coding_standards
-      - php_sniff
       - php_stan
     if: ${{ github.event_name == 'push' }}
     uses: ./.github/workflows/deployment.yml
