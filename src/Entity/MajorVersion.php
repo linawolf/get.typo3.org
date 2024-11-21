@@ -313,11 +313,11 @@ class MajorVersion implements \JsonSerializable, \Stringable
     public function isElts(): bool
     {
         $dateTime = new \DateTimeImmutable();
-        if ($this->getMaintainedUntil() == null) {
+        if ($this->getMaintainedUntil() === null) {
             return false;
         }
 
-        if ($this->getEltsUntil() == null) {
+        if ($this->getEltsUntil() === null) {
             return false;
         }
 

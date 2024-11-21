@@ -39,7 +39,7 @@ class LegacyDataService
         return $this->cache->get('releases.json', function (ItemInterface $item): string {
             $item->tag(['major-versions', 'major-version', 'releases', 'release']);
             $content = json_encode($this->majorVersionRepository->findAllPreparedForJson(), JSON_THROW_ON_ERROR);
-            $content = $content != false ? $content : '';
+            $content = $content !== false ? $content : '';
             // remove version suffix only used for version sorting
             return str_replace('.0000', '', $content);
         });

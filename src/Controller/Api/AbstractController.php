@@ -133,9 +133,9 @@ abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Contro
 
             if (array_key_exists($fieldName, $data) && \is_string($data[$fieldName])) {
                 if (isset($metadata->fieldMappings[$field]['type'])) {
-                    if ($metadata->fieldMappings[$field]['type'] == 'datetime') {
+                    if ($metadata->fieldMappings[$field]['type'] === 'datetime') {
                         $data[$fieldName] = new \DateTime($data[$fieldName]);
-                    } elseif ($metadata->fieldMappings[$field]['type'] == 'datetime_immutable') {
+                    } elseif ($metadata->fieldMappings[$field]['type'] === 'datetime_immutable') {
                         $data[$fieldName] = new \DateTimeImmutable($data[$fieldName]);
                     }
                 }
