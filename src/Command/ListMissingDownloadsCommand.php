@@ -31,9 +31,6 @@ use Symfony\Component\HttpClient\Exception\RedirectionException;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Yaml\Yaml;
 
-/**
- * @codeCoverageIgnore
- */
 class ListMissingDownloadsCommand extends Command
 {
     /**

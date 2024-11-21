@@ -32,9 +32,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-/**
- * @codeCoverageIgnore
- */
 class SatisBuildCommand extends Command
 {
     /**
