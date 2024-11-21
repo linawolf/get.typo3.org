@@ -2,9 +2,9 @@
     {% frame with { id: 'changes', title: 'Changes' } %}
         <div class="changelog">
             {% if current.elts %}
-                {{ current.releaseNotes.changes|removeWikiLink|escape('html')|parsedown|changehighlighter|raw }}
+                {{ current.releaseNotes.changes|removeWikiLink|escape('html')|markdown|changehighlighter|raw }}
             {% else %}
-                {{ current.releaseNotes.changes|removeWikiLink|escape('html')|parsedown|changehighlighter|commitlinker|raw }}
+                {{ current.releaseNotes.changes|removeWikiLink|escape('html')|markdown|changehighlighter|commitlinker|raw }}
             {% endif %}
         </div>
     {% endframe %}

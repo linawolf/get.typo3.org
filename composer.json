@@ -51,7 +51,6 @@
 		"doctrine/orm": "^2.12",
 		"doctrine/persistence": "^2.5",
 		"easycorp/easyadmin-bundle": "^4.3",
-		"erusev/parsedown": "^1.7",
 		"guzzlehttp/guzzle": "^7.4",
 		"guzzlehttp/promises": "^1.5",
 		"jms/serializer": "^3.17",

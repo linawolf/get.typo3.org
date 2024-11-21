@@ -1,7 +1,7 @@
 {% if current.releaseNotes.news or current.releaseNotes.newslink %}
     {% frame with { id: 'news', title: 'News' }%}
         {% if current.releaseNotes.news %}
-            {{ current.releaseNotes.news|parsedown|raw }}
+            {{ current.releaseNotes.news|markdown|raw }}
         {% endif %}
         {% if current.releaseNotes.newslink %}
             <a href="{{ current.releaseNotes.newslink }}" class="btn btn-primary">
