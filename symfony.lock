@@ -447,7 +447,13 @@
         "version": "v5.1.9"
     },
     "symfony/panther": {
-        "version": "v0.7.1"
+        "version": "2.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "673836afb0eac2b0ec36c44f2ff0379e5a4b2177"
+        }
     },
     "symfony/password-hasher": {
         "version": "v5.3.4"
