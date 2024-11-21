@@ -1,7 +1,12 @@
 twig:
+    file_name_pattern: '*.twig'
     default_path: '%kernel.project_dir%/templates'
     globals:
         baseUrl: '%env(BASE_URL)%'
         packagist:
             search: https://packagist.org/explore/?type=typo3-cms-extension
             submit: https://packagist.org/packages/submit
+
+when@test:
+    twig:
+        strict_variables: true
