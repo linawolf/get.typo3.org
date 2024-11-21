@@ -197,12 +197,10 @@
 		"ci:php": [
 			"@ci:php:lint",
 			"@ci:php:cs-fixer",
-			"@ci:php:sniff",
 			"@ci:php:stan"
 		],
 		"ci:php:cs-fixer": "@php php-cs-fixer fix -v --dry-run --diff",
 		"ci:php:lint": "@php phplint --no-progress",
-		"ci:php:sniff": "@php phpcs --standard=PSR12 src tests || true",
 		"ci:php:stan": "@php phpstan analyse --no-progress",
 		"ci:static": [
 			"@ci:json:lint",
@@ -226,7 +224,6 @@
 			"@fix:php:cs-fixer"
 		],
 		"fix:php:cs-fixer": "@php php-cs-fixer fix",
-		"fix:php:sniff": "phpcbf src",
 		"satis:install": [
 			"rm -fr satis",
 			"@composer create-project --stability=dev --ansi composer/satis satis"
