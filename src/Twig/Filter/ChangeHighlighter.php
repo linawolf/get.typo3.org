@@ -48,7 +48,7 @@ class ChangeHighlighter extends AbstractExtension
             $pattern,
             static function ($matches): string {
                 $cssClass = 'change-' . strtolower($matches['type']);
-                if (isset($matches['important']) && $matches['important'] !== '') {
+                if ($matches['important'] !== '') {
                     $cssClass .= ' change-important';
                 }
 

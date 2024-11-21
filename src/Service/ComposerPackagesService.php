@@ -818,7 +818,7 @@ final class ComposerPackagesService
 
         foreach (self::PACKAGES as $package) {
             $builder->add(
-                str_replace('/', '-', $package['name']), /** @phpstan-ignore-line */
+                str_replace('/', '-', $package['name']),
                 CheckboxType::class,
                 [
                     'value'         => $package['name'],

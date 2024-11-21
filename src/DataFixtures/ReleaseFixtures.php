@@ -121,7 +121,7 @@ final class ReleaseFixtures extends Fixture implements DependentFixtureInterface
             for ($changeIteration = 0; $changeIteration < $faker->numberBetween(5, 50); ++$changeIteration) {
                 $changelog[] = sprintf(
                     '2019-10-30 7254d67918 [%s] ' . $faker->sentence($faker->numberBetween(4, 8)) . ' (thanks to %s)',
-                    $faker->randomElement($changelogTypes), /** @phpstan-ignore-line */
+                    $faker->randomElement($changelogTypes),
                     $faker->name()
                 );
             }
