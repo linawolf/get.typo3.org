@@ -29,6 +29,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 use ZipArchive;
+use RuntimeException;
 
 class SitepackageGenerator
 {
@@ -48,7 +49,7 @@ class SitepackageGenerator
         $sourceDir = $this->kernel->getProjectDir() . '/resources/packages/' . $package->getBasePackage() . '/' . (string)$package->getTypo3Version() . '/src/';
         $tempFileName = tempnam(sys_get_temp_dir(), $this->filename);
         if ($tempFileName === false) {
-            throw new \RuntimeException(sprintf('Cannot create temporary name for %s/%s' . sys_get_temp_dir(), $this->filename), 1732123721);
+            throw new RuntimeException(sprintf('Cannot create temporary name for %s/%s' . sys_get_temp_dir(), $this->filename), 1732123721);
         }
         $this->zipPath = $tempFileName;
         $fileList = FileUtility::listDirectory($sourceDir);
