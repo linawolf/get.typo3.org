@@ -274,7 +274,7 @@ jobs:
     name: PHP Stan
     needs:
       - php_lint
-    runs-on: ubuntu-latestcoverage
+    runs-on: ubuntu-latest
     steps:
 
       - name: Checkout
