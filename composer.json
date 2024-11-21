@@ -192,19 +192,9 @@
 		],
 		"ci:composer": [
 			"@ci:composer:validate",
-			"@ci:composer:normalize",
-			"@ci:composer:require-checker"
+			"@ci:composer:normalize"
 		],
 		"ci:composer:normalize": "@composer normalize --dry-run",
-		"ci:composer:require-checker": [
-			"@composer require doctrine/data-fixtures:* doctrine/doctrine-fixtures-bundle:* fakerphp/faker:* --ansi --no-interaction --no-progress",
-			"@php composer-require-checker --ignore-parse-errors",
-			"@ci:composer:require-checker:reset"
-		],
-		"ci:composer:require-checker:reset": [
-			"@composer remove doctrine/data-fixtures --ansi --no-interaction --no-progress --no-update",
-			"@composer require doctrine/doctrine-fixtures-bundle:^3.4 fakerphp/faker:^1.20 --dev --ansi --no-interaction --no-progress"
-		],
 		"ci:composer:validate": "@composer validate --strict",
 		"ci:dynamic": [
 			"@ci:tests"

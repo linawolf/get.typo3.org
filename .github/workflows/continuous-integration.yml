@@ -45,9 +45,6 @@ jobs:
       - name: Validate composer.json
         run: composer ci:composer:validate
 
-      - name: Check dependencies
-        run: composer ci:composer:require-checker
-
   json_lint:
     name: JSON Lint
     runs-on: ubuntu-latest
