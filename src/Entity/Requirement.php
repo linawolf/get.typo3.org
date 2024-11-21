@@ -66,8 +66,6 @@ class Requirement implements JsonSerializable, Stringable
         #[ORM\JoinColumn(name: 'version', referencedColumnName: 'version')]
         private ?MajorVersion $version,
         /**
-         * @noRector
-         *
          * @OA\Property(example="database")
          */
         #[Assert\Choice(callback: [RequirementCategoryEnum::class, 'getAvailableOptions'])]

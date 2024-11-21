@@ -85,7 +85,6 @@ class CacheWarmupService implements CacheWarmerInterface
 
         $this->warmUpMajorVersions();
 
-        /** @noRector */
         $versions = $this->releases->findAll();
         $routes = [
             'release_show',
@@ -115,7 +114,6 @@ class CacheWarmupService implements CacheWarmerInterface
 
     private function warmUpActiveMajorVersions(): void
     {
-        /** @noRector */
         $versions = $this->majorVersions->findAllActive();
         $routes = [
             'majorVersion_show',
@@ -125,7 +123,6 @@ class CacheWarmupService implements CacheWarmerInterface
 
     private function warmUpMajorVersions(): void
     {
-        /** @noRector */
         $versions = $this->majorVersions->findAll();
         $routes = [
             'app_api_majorversion_releases_getreleasesbymajorversion',

@@ -202,14 +202,12 @@
 		"ci:json:lint": "@php jsonlint -q composer.json",
 		"ci:php": [
 			"@ci:php:lint",
-			"@ci:php:rector",
 			"@ci:php:cs-fixer",
 			"@ci:php:sniff",
 			"@ci:php:stan"
 		],
 		"ci:php:cs-fixer": "@php php-cs-fixer fix -v --dry-run --diff",
 		"ci:php:lint": "@php phplint --no-progress",
-		"ci:php:rector": "@php rector process --dry-run --no-progress-bar || true",
 		"ci:php:sniff": "@php phpcs --standard=PSR12 src tests || true",
 		"ci:php:stan": "@php phpstan analyse --no-progress",
 		"ci:static": [
@@ -232,11 +230,9 @@
 			"@fix:php"
 		],
 		"fix:php": [
-			"@fix:php:rector",
 			"@fix:php:cs-fixer"
 		],
 		"fix:php:cs-fixer": "@php php-cs-fixer fix",
-		"fix:php:rector": "@php rector process --no-diffs",
 		"fix:php:sniff": "phpcbf src",
 		"satis:install": [
 			"rm -fr satis",
@@ -245,7 +241,6 @@
 		"satis:update": [
 			"@satis:install"
 		],
-		"tools:php:rector": "@php rector process --dry-run",
 		"tools:setup:clean": "rm -r tools/**/composer.lock tools/**/vendor",
 		"tools:setup:install": "@composer bin all install --ansi",
 		"tools:setup:update": "@composer bin all update --ansi"

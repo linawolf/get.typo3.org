@@ -17,7 +17,6 @@ magephp:
         - ./phpstan.neon
         - ./phpunit.xml.dist
         - ./README.md
-        - ./rector.php
     environments:
         develop:
             user: get-stage

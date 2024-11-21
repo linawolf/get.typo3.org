@@ -72,9 +72,6 @@ class Release implements JsonSerializable, Stringable
     #[Serializer\Type("DateTime<'Y-m-d\\TH:i:sP'>")]
     private DateTimeInterface $date;
 
-    /**
-     * @noRector
-     */
     #[Assert\Choice(callback: [ReleaseTypeEnum::class, 'getAvailableOptions'])]
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING)]
     #[Serializer\Groups(['data'])]

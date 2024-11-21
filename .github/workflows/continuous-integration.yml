@@ -153,44 +153,6 @@ jobs:
       - name: Lint PHP files
         run: composer ci:php:lint
 
-  php_rector:
-    name: PHP Rector
-    needs:
-      - php_lint
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          tools: composer:2
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-latest-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-latest-
-            ${{ runner.os }}-composer-
-
-      - name: Setup authentication for Composer
-        run: composer config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install dependencies
-        run: composer install --prefer-dist --ansi --no-interaction --no-progress
-
-      - name: Validation of Rector rules for PHP files
-        run: composer ci:php:rector
-
   php_coding_standards:
     name: PHP Coding Standards
     needs:
@@ -363,7 +325,6 @@ jobs:
       - php_coding_standards
       - php_sniff
       - php_stan
-      - php_rector
     if: ${{ github.event_name == 'push' }}
     uses: ./.github/workflows/deployment.yml
     secrets:
