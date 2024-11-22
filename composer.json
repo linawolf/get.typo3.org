@@ -222,6 +222,9 @@
 		"fix:php": [
 			"@fix:php:cs-fixer"
 		],
+		"update:phpstan-baseline": [
+			"@php phpstan analyse --generate-baseline"
+		],
 		"fix:php:cs-fixer": "@php php-cs-fixer fix",
 		"satis:install": [
 			"rm -fr satis",

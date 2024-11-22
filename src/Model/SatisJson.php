@@ -29,8 +29,8 @@ class SatisJson implements \Stringable
      * @var array{
      *   name: string,
      *   homepage: string|null,
-     *   repositories: array<int, array<string, string>>|array{},
-     *   require: array<string, string>|array{},
+     *   repositories?: array<int, array<string, string>>|null,
+     *   require?: array<string, string>|null,
      *   require-all: bool,
      *   require-dependencies: bool,
      *   require-dev-dependencies: bool

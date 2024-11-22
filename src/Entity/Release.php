@@ -95,7 +95,7 @@ class Release implements \JsonSerializable, \Stringable
     #[Assert\NotNull]
     #[ORM\ManyToOne(targetEntity: MajorVersion::class, inversedBy: 'releases')]
     #[ORM\JoinColumn(name: 'major_version', referencedColumnName: 'version')]
-    private MajorVersion $majorVersion;
+    private ?MajorVersion $majorVersion;
 
     #[Assert\Valid]
     #[ORM\Embedded(class: ReleaseNotes::class)]

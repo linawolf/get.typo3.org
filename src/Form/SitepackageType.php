@@ -34,7 +34,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SitepackageType extends AbstractType
 {
     /**
-     * @param array{action: string} $options
+     * @param array<string, mixed> $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
