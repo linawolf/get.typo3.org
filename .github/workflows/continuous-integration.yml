@@ -2,10 +2,6 @@ name: Continuous Integration / Deployment (CI/CD)
 
 on:
   push:
-    branches:
-      - develop
-      - production
-      - stage
   pull_request:
 
 jobs:
@@ -21,7 +17,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          tools: composer:2
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -57,7 +52,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          tools: composer:2
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -93,7 +87,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          tools: composer:2
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -129,7 +122,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          tools: composer:2
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -167,7 +159,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          tools: composer:2
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -205,7 +196,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          tools: composer:2
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -243,7 +233,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          tools: composer:2
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -286,7 +275,7 @@ jobs:
       - validation
       - php_coding_standards
       - php_stan
-    if: ${{ github.event_name == 'push' }}
+    if: (github.ref == 'refs/heads/production') && github.event_name == 'push' && (github.repository == 'TYPO3/get.typo3.org')
     uses: ./.github/workflows/deployment.yml
     secrets:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
