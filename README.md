@@ -113,22 +113,6 @@ Currently there are 4 Symfony environments defined:
 
 Additional configuration for the webserver can be found in the folder `cnf`.
 
-#### Staging / Development
-
-![CI Development](https://github.com/TYPO3/get.typo3.org/workflows/Integration%20(CI)/badge.svg?branch=develop)
-![CD Development](https://github.com/TYPO3/get.typo3.org/workflows/Deployment%20(CD)/badge.svg?branch=develop)
-
-All pushs to the branch `develop` are automatically deployed to the development
-site at [get.typo3.dev](https://get.typo3.dev) or [composer.typo3.dev](https://composer.typo3.dev).
-This site is protected and can be accessed with the following credentials:
-
-* User: `preview`
-* Password: `U@2C@3t295hb`
-
-SSH access is possible with the following command:
-
-`ssh get-dev@get01.typo3server.ch`
-
 #### Production
 
 ![CI Production](https://github.com/TYPO3/get.typo3.org/workflows/Integration%20(CI)/badge.svg?branch=production)
