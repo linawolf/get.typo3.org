@@ -51,7 +51,7 @@ class SitepackageType extends AbstractType
             ->add('typo3Version', ChoiceType::class, [
                 'label' => 'TYPO3 Version',
                 'choices' => [
-                    '13.4 (Beta)' => 13.4,
+                    '13.4' => 13.4,
                     '12.4' => 12.4,
                     '11.5' => 11.5,
                     '10.4' => 10.4,
@@ -61,7 +61,7 @@ class SitepackageType extends AbstractType
             ->add('title', TextType::class, [
                 'attr' => [
                     'autocomplete' => 'off',
-                    'placeholder' => 'My Sitepackage',
+                    'placeholder' => 'My Site Package',
                 ],
             ])
             ->add('description', TextareaType::class, [
@@ -69,7 +69,7 @@ class SitepackageType extends AbstractType
                 'empty_data' => '',
                 'attr' => [
                     'autocomplete' => 'off',
-                    'placeholder' => 'Optional description for the use of this sitepackage',
+                    'placeholder' => 'Optional description for the use of this Site Package',
                 ],
             ])
             ->add('repositoryUrl', TextType::class, [

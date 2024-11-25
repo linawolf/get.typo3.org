@@ -74,7 +74,7 @@ class MenuBuilder extends TemplateMenuBuider
             'sitepackage',
             [
                 'route' => 'sitepackage_index',
-                'label' => 'Sitepackage',
+                'label' => 'Site Package',
             ]
         );
 
