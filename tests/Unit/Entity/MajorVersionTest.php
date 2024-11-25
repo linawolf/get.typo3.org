@@ -25,10 +25,7 @@ namespace App\Tests\Unit\Entity;
 
 use App\Entity\MajorVersion;
 use Doctrine\Common\Collections\ArrayCollection;
-use Iterator;
-use LogicException;
 use PHPUnit\Framework\TestCase;
-use DateTimeImmutable;
 
 class MajorVersionTest extends TestCase
 {
@@ -78,7 +75,7 @@ class MajorVersionTest extends TestCase
         $majorVersion = json_decode($majorVersion, true, 512, JSON_THROW_ON_ERROR);
 
         if (!is_array($majorVersion)) {
-            throw new LogicException('Array expected');
+            throw new \LogicException('Array expected');
         }
 
         self::assertEquals($expectedResult->active, $majorVersion['active'] ?? null);
@@ -86,11 +83,11 @@ class MajorVersionTest extends TestCase
     }
 
     /**
-     * @return Iterator<string, array<int, MajorVersion|MajorVersionExpected>>
+     * @return \Iterator<string, array<int, MajorVersion|MajorVersionExpected>>
      */
-    public function entityTestDataProvider(): Iterator
+    public function entityTestDataProvider(): \Iterator
     {
-        $dateTimeToday = new DateTimeImmutable();
+        $dateTimeToday = new \DateTimeImmutable();
         $collection = new ArrayCollection();
 
         yield 'SPRINT' => [

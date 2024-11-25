@@ -1,14 +1,12 @@
 styles:
   templates:
-    layoutRootPath: 'EXT:{{ package.extensionKey }}/Resources/Private/Layouts/ContentElements/'
-    partialRootPath: 'EXT:{{ package.extensionKey }}/Resources/Private/Partials/ContentElements/'
-    templateRootPath: 'EXT:{{ package.extensionKey }}/Resources/Private/Templates/ContentElements/'
+    layoutRootPath: 'EXT:{{ package.extensionKey }}/Resources/Private/ContentElements/Layouts/'
+    partialRootPath: 'EXT:{{ package.extensionKey }}/Resources/Private/ContentElements/Partials/'
+    templateRootPath: 'EXT:{{ package.extensionKey }}/Resources/Private/ContentElements/Templates/'
 
 page:
-  fluidtemplate:
-    layoutRootPath: 'EXT:{{ package.extensionKey }}/Resources/Private/Layouts/Page/'
-    partialRootPath: 'EXT:{{ package.extensionKey }}/Resources/Private/Partials/Page/'
-    templateRootPath: 'EXT:{{ package.extensionKey }}/Resources/Private/Templates/Page/'
+  pageview:
+    paths: 'EXT:{{ package.extensionKey }}/Resources/Private/PageView/'
 
   meta:
     viewport: 'width=device-width, initial-scale=1'

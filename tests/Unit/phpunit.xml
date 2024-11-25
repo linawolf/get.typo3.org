@@ -14,15 +14,6 @@
   stopOnFailure="false"
   bootstrap="../bootstrap.php"
 >
-  <coverage>
-    <include>
-      <directory>../../src/</directory>
-    </include>
-    <report>
-      <html outputDirectory="../../var/log/report-unit"/>
-      <php outputFile="../../var/log/coverage/coverage-unit.cov"/>
-    </report>
-  </coverage>
   <testsuites>
     <testsuite name="Unit Test Suite">
       <directory>./</directory>

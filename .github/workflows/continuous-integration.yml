@@ -2,43 +2,28 @@ name: Continuous Integration / Deployment (CI/CD)
 
 on:
   push:
-    branches:
-      - develop
-      - production
-      - stage
   pull_request:
-  schedule:
-    - cron: '33 3 * * *'
-
-env:
-  COMPOSER_FLAGS: --ansi --no-interaction --no-progress
-  COMPOSER_INSTALL_FLAGS: --prefer-dist
-  COMPOSER_UPDATE_FLAGS: ''
 
 jobs:
   validation:
     name: Composer validation
     runs-on: ubuntu-latest
-
     steps:
+
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          coverage: none
-          extensions: zip, zlib
-          ini-values: memory_limit=-1, error_reporting=E_ALL, display_errors=On
           php-version: '8.2'
-          tools: composer:2
 
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-latest-${{ hashFiles('**/composer.lock') }}
@@ -50,37 +35,30 @@ jobs:
         run: composer config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies
-        run: composer install ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
+        run: composer install --prefer-dist --ansi --no-interaction --no-progress
 
       - name: Validate composer.json
-        run: composer ci:composer:validate
-
-      - name: Check dependencies
-        run: composer ci:composer:require-checker
+        run: composer validate --strict
 
   json_lint:
     name: JSON Lint
     runs-on: ubuntu-latest
-
     steps:
+
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          coverage: none
-          extensions: ctype, iconv, json, sqlite3, tokenizer, zip, zlib
-          ini-values: memory_limit=-1, error_reporting=E_ALL, display_errors=On
           php-version: '8.2'
-          tools: composer:2
 
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-latest-${{ hashFiles('**/composer.lock') }}
@@ -88,8 +66,11 @@ jobs:
             ${{ runner.os }}-composer-latest-
             ${{ runner.os }}-composer-
 
+      - name: Setup authentication for Composer
+        run: composer config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install dependencies
-        run: composer install ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
+        run: composer install --prefer-dist --ansi --no-interaction --no-progress
 
       - name: Lint YAML files
         run: composer ci:json:lint
@@ -97,26 +78,22 @@ jobs:
   yaml_lint:
     name: YAML Lint
     runs-on: ubuntu-latest
-
     steps:
+
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          coverage: none
-          extensions: ctype, iconv, json, sqlite3, tokenizer, zip, zlib
-          ini-values: memory_limit=-1, error_reporting=E_ALL, display_errors=On
           php-version: '8.2'
-          tools: composer:2
 
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-latest-${{ hashFiles('**/composer.lock') }}
@@ -124,8 +101,11 @@ jobs:
             ${{ runner.os }}-composer-latest-
             ${{ runner.os }}-composer-
 
+      - name: Setup authentication for Composer
+        run: composer config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install dependencies
-        run: composer install ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
+        run: composer install --prefer-dist --ansi --no-interaction --no-progress
 
       - name: Lint YAML files
         run: composer ci:yaml:lint
@@ -133,86 +113,22 @@ jobs:
   php_lint:
     name: PHP Lint
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version:
-          - '8.2'
-        experimental: [false]
-# @todo disabled experimental versions
-#        include:
-#          - php-version: 'latest'
-#            experimental: true
-#          - php-version: 'nightly'
-#            experimental: true
-
     steps:
+
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          coverage: none
-          extensions: ctype, iconv, json, sqlite3, tokenizer, zip, zlib
-          ini-values: memory_limit=-1, error_reporting=E_ALL, display_errors=On
-          php-version: ${{ matrix.php-version }}
-          tools: composer:2
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php-version }}-
-            ${{ runner.os }}-composer-
-
-      - name: Set platform.php for nightly
-        if: ${{ matrix.php-version == 'nightly' }}
-        run: |
-          composer install --no-scripts --ignore-platform-reqs ${{ env.COMPOSER_FLAGS }}
-          composer config platform.php 8.2.99
-          composer bin phpunit config platform.php 8.2.99
-          composer update --lock
-
-      - name: Install dependencies
-        run: composer install ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
-
-      - name: Lint PHP files
-        run: composer ci:php:lint
-
-  php_rector:
-    name: PHP Rector
-    needs:
-      - php_lint
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          coverage: none
-          extensions: ctype, iconv, json, sqlite3, tokenizer, zip, zlib
-          ini-values: memory_limit=-1, error_reporting=E_ALL, display_errors=On
           php-version: '8.2'
-          tools: composer:2
 
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-latest-${{ hashFiles('**/composer.lock') }}
@@ -220,37 +136,36 @@ jobs:
             ${{ runner.os }}-composer-latest-
             ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: composer install ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
+      - name: Setup authentication for Composer
+        run: composer config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Validation of Rector rules for PHP files
-        run: composer ci:php:rector
+      - name: Install dependencies
+        run: composer install --prefer-dist --ansi --no-interaction --no-progress
+
+      - name: Lint PHP files
+        run: composer ci:php:lint
 
   php_coding_standards:
     name: PHP Coding Standards
     needs:
       - php_lint
     runs-on: ubuntu-latest
-
     steps:
+
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          coverage: none
-          extensions: ctype, iconv, json, sqlite3, tokenizer, zip, zlib
-          ini-values: memory_limit=-1, error_reporting=E_ALL, display_errors=On
           php-version: '8.2'
-          tools: composer:2
 
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-latest-${{ hashFiles('**/composer.lock') }}
@@ -258,124 +173,48 @@ jobs:
             ${{ runner.os }}-composer-latest-
             ${{ runner.os }}-composer-
 
+      - name: Setup authentication for Composer
+        run: composer config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install dependencies
-        run: composer install ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
+        run: composer install --prefer-dist --ansi --no-interaction --no-progress
 
       - name: Validation of coding standards for PHP files
         run: composer ci:php:cs
-
-  php_sniff:
-    name: PHP Code Sniffer
-    needs:
-      - php_lint
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          coverage: none
-          extensions: ctype, iconv, json, sqlite3, tokenizer, zip, zlib
-          ini-values: memory_limit=-1, error_reporting=E_ALL, display_errors=On
-          php-version: '8.2'
-          tools: composer:2
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-latest-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-latest-
-            ${{ runner.os }}-composer-
-
-      - name: Install dependencies
-        run: composer install ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
-
-      - name: Validation of coding standards
-        run: composer ci:php:sniff
 
   php_stan:
     name: PHP Stan
     needs:
       - php_lint
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['8.2']
-        dependencies: ['lock']
-        experimental: [false]
-        include:
-          - php-version: '8.2'
-            dependencies: 'highest'
-            experimental: true
-# @todo disabled experimental versions
-#          - php-version: 'latest'
-#            dependencies: 'highest'
-#            experimental: true
-#          - php-version: 'nightly'
-#            dependencies: 'highest'
-#            experimental: true
-
     steps:
+
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          coverage: none
-          extensions: ctype, iconv, json, sqlite3, tokenizer, zip, zlib
-          ini-values: memory_limit=-1
-          php-version: ${{ matrix.php-version }}
-          tools: composer:2
+          php-version: '8.2'
 
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ matrix.dependencies }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-latest-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ matrix.dependencies }}-
-            ${{ runner.os }}-composer-${{ matrix.php-version }}-
+            ${{ runner.os }}-composer-latest-
             ${{ runner.os }}-composer-
 
       - name: Setup authentication for Composer
         run: composer config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Allow alpha releases for latest-deps builds to catch problems earlier
-        if: ${{ matrix.dependencies == 'highest' }}
-        run: composer config minimum-stability alpha
-
-      - name: Set platform.php for nightly
-        if: ${{ matrix.php-version == 'nightly' }}
-        run: |
-          composer install --no-scripts --ignore-platform-reqs ${{ env.COMPOSER_FLAGS }}
-          composer config platform.php 8.2.99
-          composer bin phpunit config platform.php 8.2.99
-          composer update --lock
-
       - name: Install dependencies
-        if: ${{ matrix.dependencies == 'lock' }}
-        run: composer install ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
-
-      - name: Update dependencies
-        if: ${{ matrix.dependencies != 'lock' }}
-        run: composer update ${{ env.COMPOSER_UPDATE_FLAGS }} ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
+        run: composer install --prefer-dist --ansi --no-interaction --no-progress
 
       - name: Run PHPStan
         run: composer ci:php:stan
@@ -385,116 +224,48 @@ jobs:
     needs:
       - php_lint
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['8.2']
-        dependencies: ['lock']
-        experimental: [false]
-        include:
-          - php-version: '8.2'
-            dependencies: 'highest'
-            experimental: false
-# @todo disabled experimental versions
-#          - php-version: 'latest'
-#            dependencies: 'highest'
-#            experimental: true
-#          - php-version: 'nightly'
-#            dependencies: 'highest'
-#            experimental: true
-
     steps:
+
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          coverage: xdebug
-          extensions: ctype, iconv, json, sqlite3, tokenizer, zip, zlib
-          ini-values: memory_limit=-1, error_reporting=E_ALL, display_errors=On
-          php-version: ${{ matrix.php-version }}
-          tools: composer:2
+          php-version: '8.2'
 
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ matrix.dependencies }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-latest-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.php-version }}-${{ matrix.dependencies }}-
-            ${{ runner.os }}-composer-${{ matrix.php-version }}-
+            ${{ runner.os }}-composer-latest-
             ${{ runner.os }}-composer-
 
       - name: Setup authentication for Composer
         run: composer config github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Allow alpha releases for latest-deps builds to catch problems earlier
-        if: ${{ matrix.dependencies == 'highest' }}
-        run: composer config minimum-stability alpha
-
-      - name: Set platform.php for nightly
-        if: ${{ matrix.php-version == 'nightly' }}
-        run: |
-          composer install --no-scripts --ignore-platform-reqs ${{ env.COMPOSER_FLAGS }}
-          composer config platform.php 8.2.99
-          composer bin phpunit config platform.php 8.2.99
-          composer update --lock
-
       - name: Install dependencies
-        if: ${{ matrix.dependencies == 'lock' }}
-        run: composer install ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
-
-      - name: Update dependencies
-        if: ${{ matrix.dependencies != 'lock' }}
-        run: composer update ${{ env.COMPOSER_UPDATE_FLAGS }} ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
+        run: composer install --prefer-dist --ansi --no-interaction --no-progress
 
       - name: Unit Tests
-        continue-on-error: ${{ matrix.experimental }}
-        if: always()
         run: composer ci:tests:php:unit
 
       - name: Functional Tests
-        continue-on-error: ${{ matrix.experimental }}
-        if: always()
         run: composer ci:tests:php:functional
 
-      - name: Upload coverage results to Coveralls
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COVERALLS_PARALLEL: true
-          COVERALLS_FLAG_NAME: php-${{ matrix.php-version }}-${{ matrix.dependencies }}
-        run: |
-          composer exec phpcov -- merge --clover var/log/coverage/clover.xml var/log/coverage
-          composer global require ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }} php-coveralls/php-coveralls
-          composer global exec php-coveralls -- --coverage_clover=var/log/coverage/clover.xml -vvv --json_path=var/log/coverage/coveralls-upload.json
-
       - name: Upload Logs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: logs-${{ matrix.php-version }}-${{ matrix.dependencies }}
+          name: logs
           path: var/log
           retention-days: 7
-
-  coveralls-finish:
-    name: Finish Coveralls
-    needs:
-      - tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Coveralls Finished
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel-finished: true
 
   deployment:
     name: Deployment
@@ -503,11 +274,8 @@ jobs:
       - yaml_lint
       - validation
       - php_coding_standards
-      - php_sniff
       - php_stan
-      - php_rector
-      - coveralls-finish
-    if: ${{ github.event_name == 'push' }}
+    if: (github.ref == 'refs/heads/production') && github.event_name == 'push' && (github.repository == 'TYPO3/get.typo3.org')
     uses: ./.github/workflows/deployment.yml
     secrets:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

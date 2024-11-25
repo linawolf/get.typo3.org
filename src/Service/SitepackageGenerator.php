@@ -28,7 +28,6 @@ use App\Utility\FileUtility;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
-use ZipArchive;
 
 class SitepackageGenerator
 {
@@ -53,8 +52,8 @@ class SitepackageGenerator
         $this->zipPath = $tempFileName;
         $fileList = FileUtility::listDirectory($sourceDir);
 
-        $zipFile = new ZipArchive();
-        $opened = $zipFile->open($this->zipPath, ZipArchive::CREATE);
+        $zipFile = new \ZipArchive();
+        $opened = $zipFile->open($this->zipPath, \ZipArchive::CREATE);
         if ($opened === true) {
             foreach ($fileList as $file) {
                 if ($file !== $this->zipPath && file_exists($file)) {

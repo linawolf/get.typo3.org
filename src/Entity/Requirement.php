@@ -30,11 +30,6 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Validator\Constraints as Assert;
-use JsonSerializable;
-use InvalidArgumentException;
-use Stringable;
-
-use function ucfirst;
 
 /**
  * @OA\Schema(
@@ -45,9 +40,9 @@ use function ucfirst;
 #[ORM\Entity(repositoryClass: RequirementRepository::class)]
 #[ORM\EntityListeners([RequirementListener::class])]
 #[ORM\UniqueConstraint(columns: ['version', 'category', 'name'])]
-class Requirement implements JsonSerializable, Stringable
+class Requirement implements \JsonSerializable, \Stringable
 {
-    public static function create(MajorVersion $version = null): self
+    public static function create(?MajorVersion $version = null): self
     {
         return new self(
             null,
@@ -66,8 +61,6 @@ class Requirement implements JsonSerializable, Stringable
         #[ORM\JoinColumn(name: 'version', referencedColumnName: 'version')]
         private ?MajorVersion $version,
         /**
-         * @noRector
-         *
          * @OA\Property(example="database")
          */
         #[Assert\Choice(callback: [RequirementCategoryEnum::class, 'getAvailableOptions'])]
@@ -112,7 +105,7 @@ class Requirement implements JsonSerializable, Stringable
     public function setCategory(string $category): void
     {
         if (!in_array($category, RequirementCategoryEnum::getAvailableOptions(), true)) {
-            throw new InvalidArgumentException('Invalid category');
+            throw new \InvalidArgumentException('Invalid category');
         }
 
         $this->category = $category;
@@ -144,7 +137,7 @@ class Requirement implements JsonSerializable, Stringable
             'mariadb' => 'MariaDB',
             'sqlite' => 'SQLite',
             'ram' => 'RAM',
-            default => ucfirst($this->getName()),
+            default => \ucfirst($this->getName()),
         };
     }
 
@@ -178,7 +171,7 @@ class Requirement implements JsonSerializable, Stringable
 
     public function __toString(): string
     {
-        $result = ucfirst($this->getCategory()) . ' / ' . $this->getTitle();
+        $result = \ucfirst($this->getCategory()) . ' / ' . $this->getTitle();
 
         if (($min = $this->getMin()) !== \null) {
             $result .= ': ' . $min;

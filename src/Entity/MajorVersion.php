@@ -31,9 +31,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Annotations as OA;
-use JsonSerializable;
-use DateTimeImmutable;
-use Stringable;
 
 /**
  * @OA\Schema(
@@ -43,7 +40,7 @@ use Stringable;
  */
 #[ORM\Entity(repositoryClass: MajorVersionRepository::class)]
 #[ORM\EntityListeners([MajorVersionListener::class])]
-class MajorVersion implements JsonSerializable, Stringable
+class MajorVersion implements \JsonSerializable, \Stringable
 {
     /**
      * For example 7 or 8 or 4.3.
@@ -57,7 +54,7 @@ class MajorVersion implements JsonSerializable, Stringable
 
     public static function create(float $version = 0.0): self
     {
-        $now = (new DateTimeImmutable())->setTime(0, 0, 0);
+        $now = (new \DateTimeImmutable())->setTime(0, 0, 0);
         $emptyCollection = new ArrayCollection();
         return new self(
             $version,
@@ -106,7 +103,7 @@ class MajorVersion implements JsonSerializable, Stringable
         #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_IMMUTABLE)]
         #[Serializer\Groups(['data', 'content', 'patch'])]
         #[Serializer\Type("DateTimeImmutable<'Y-m-d\\TH:i:sP'>")]
-        private DateTimeImmutable $releaseDate,
+        private \DateTimeImmutable $releaseDate,
         /**
          * @OA\Property(example="2017-12-12T16:48:22+00:00")
          *
@@ -115,21 +112,21 @@ class MajorVersion implements JsonSerializable, Stringable
         #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_IMMUTABLE, nullable: true)]
         #[Serializer\Groups(['data', 'content', 'patch'])]
         #[Serializer\Type("DateTimeImmutable<'Y-m-d\\TH:i:sP'>")]
-        private ?DateTimeImmutable $regularMaintenanceUntil,
+        private ?\DateTimeImmutable $regularMaintenanceUntil,
         /**
          * @OA\Property(example="2017-12-12T16:48:22+00:00")
          */
         #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_IMMUTABLE, nullable: true)]
         #[Serializer\Groups(['data', 'content', 'patch'])]
         #[Serializer\Type("DateTimeImmutable<'Y-m-d\\TH:i:sP'>")]
-        private ?DateTimeImmutable $maintainedUntil,
+        private ?\DateTimeImmutable $maintainedUntil,
         /**
          * @OA\Property(example="2017-12-12T16:48:22+00:00")
          */
         #[ORM\Column(type: \Doctrine\DBAL\Types\Types::DATETIME_IMMUTABLE, nullable: true)]
         #[Serializer\Groups(['data', 'content', 'patch'])]
         #[Serializer\Type("DateTimeImmutable<'Y-m-d\\TH:i:sP'>")]
-        private ?DateTimeImmutable $eltsUntil,
+        private ?\DateTimeImmutable $eltsUntil,
         /**
          * @var Collection<int, Requirement>
          */
@@ -220,44 +217,44 @@ class MajorVersion implements JsonSerializable, Stringable
         return $this->description;
     }
 
-    public function setRegularMaintenanceUntil(?DateTimeImmutable $regularMaintenanceUntil): void
+    public function setRegularMaintenanceUntil(?\DateTimeImmutable $regularMaintenanceUntil): void
     {
         $this->regularMaintenanceUntil = $regularMaintenanceUntil;
     }
 
-    public function getRegularMaintenanceUntil(): ?DateTimeImmutable
+    public function getRegularMaintenanceUntil(): ?\DateTimeImmutable
     {
         return $this->regularMaintenanceUntil;
     }
 
-    public function setMaintainedUntil(?DateTimeImmutable $maintainedUntil): void
+    public function setMaintainedUntil(?\DateTimeImmutable $maintainedUntil): void
     {
         $this->maintainedUntil = $maintainedUntil;
     }
 
-    public function getMaintainedUntil(): ?DateTimeImmutable
+    public function getMaintainedUntil(): ?\DateTimeImmutable
     {
         return $this->maintainedUntil;
     }
 
-    public function setEltsUntil(?DateTimeImmutable $eltsUntil): void
+    public function setEltsUntil(?\DateTimeImmutable $eltsUntil): void
     {
         $this->eltsUntil = $eltsUntil;
     }
 
-    public function getEltsUntil(): ?DateTimeImmutable
+    public function getEltsUntil(): ?\DateTimeImmutable
     {
         return $this->eltsUntil ?? (
             $this->getMaintainedUntil() !== null ? $this->getMaintainedUntil()->modify('+3 years') : null
         );
     }
 
-    public function setReleaseDate(DateTimeImmutable $releaseDate): void
+    public function setReleaseDate(\DateTimeImmutable $releaseDate): void
     {
         $this->releaseDate = $releaseDate;
     }
 
-    public function getReleaseDate(): DateTimeImmutable
+    public function getReleaseDate(): \DateTimeImmutable
     {
         return $this->releaseDate;
     }
@@ -267,7 +264,7 @@ class MajorVersion implements JsonSerializable, Stringable
         $array = $this->releases->toArray();
         usort(
             $array,
-            static fn ($a, $b): int => version_compare($b->getVersion(), $a->getVersion())
+            static fn($a, $b): int => version_compare($b->getVersion(), $a->getVersion())
         );
         return $array !== [] ? reset($array) : null;
     }
@@ -305,7 +302,7 @@ class MajorVersion implements JsonSerializable, Stringable
 
     public function isActive(): bool
     {
-        $dateTime = new DateTimeImmutable();
+        $dateTime = new \DateTimeImmutable();
         if ($this->getMaintainedUntil() === null) {
             return true;
         }
@@ -315,12 +312,12 @@ class MajorVersion implements JsonSerializable, Stringable
 
     public function isElts(): bool
     {
-        $dateTime = new DateTimeImmutable();
-        if ($this->getMaintainedUntil() == null) {
+        $dateTime = new \DateTimeImmutable();
+        if ($this->getMaintainedUntil() === null) {
             return false;
         }
 
-        if ($this->getEltsUntil() == null) {
+        if ($this->getEltsUntil() === null) {
             return false;
         }
 
@@ -381,7 +378,7 @@ class MajorVersion implements JsonSerializable, Stringable
 
         uksort(
             $releaseData,
-            static fn (string $a, string $b): int => version_compare($a, $b)
+            static fn(string $a, string $b): int => version_compare($a, $b)
         );
         $desc = array_reverse($releaseData);
         $latest = $this->getLatestRelease();

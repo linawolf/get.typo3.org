@@ -34,8 +34,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-use function array_flip;
-
 class RequirementCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
@@ -70,7 +68,7 @@ class RequirementCrudController extends AbstractCrudController
     {
         yield AssociationField::new('version', 'Major Version');
         yield ChoiceField::new('category', 'Category')->setChoices(
-            static fn () => array_flip(RequirementCategoryEnum::getAvailableOptions(true))
+            static fn() => \array_flip(RequirementCategoryEnum::getAvailableOptions(true))
         );
         yield TextField::new('name', 'Name');
         yield TextField::new('min', 'Lower Bound');

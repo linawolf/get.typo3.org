@@ -17,39 +17,7 @@ magephp:
         - ./phpstan.neon
         - ./phpunit.xml.dist
         - ./README.md
-        - ./rector.php
     environments:
-        develop:
-            user: get-stage
-            from: ./* ./.env
-            host_path: ./site/mage/
-            releases: 3
-            hosts:
-                - t3o04.typo3server.ch
-            pre-deploy:
-                - exec: { cmd: "echo \"APP_ENV=prod\" >> .env.local", desc: "Create .env.local" }
-                - composer/install: { flags: '--no-dev --no-progress --optimize-autoloader' }
-            on-deploy:
-                - exec: { cmd: 'mkdir -p var', desc: 'Create var folder' }
-                - exec: { cmd: 'mkdir -p var/satis', desc: 'Create var/satis folder' }
-                - exec: { cmd: 'test -d ~/site/shared/public/satis || mkdir -p ~/site/shared/public/satis', desc: 'Create shared/public/satis folder' }
-                - fs/link: { from: "../../../shared/.env.local", to: ".env.local" }
-                - fs/link: { from: "../../../../shared/public/satis", to: "public/satis" }
-                - fs/link: { from: "satis/p", to: "public/p" }
-                - fs/link: { from: "satis/p2", to: "public/p2" }
-                - fs/link: { from: "satis/aliases.json", to: "public/aliases.json" }
-                - fs/link: { from: "satis/packages.json", to: "public/packages.json" }
-                - exec: { cmd: "sqlite3 ~/site/mage/current/var/gettr.db '.backup var/gettr.db'", desc: "Copy DB" }
-                - exec: { cmd: "php-restart", desc: "Restart PHP and reset OPcache" }
-                - exec: { cmd: "php ./bin/console doctrine:migrations:sync-metadata-storage --no-interaction", desc: "Synchronize DB Migrations" }
-                - exec: { cmd: "php ./bin/console doctrine:migrations:migrate --no-interaction", desc: "Apply DB Migrations" }
-                - exec: { cmd: "php ./bin/console cache:clear --env=prod", desc: "Clear Cache", timeout: 600 }
-                - exec: { cmd: "php ./bin/console cache:warmup --env=prod", desc: "Cache Warmup", timeout: 600 }
-                - exec: { cmd: "crontab cnf/crontab-dev.cron", desc: "Install crontab" }
-            on-release:
-                - exec: { cmd: "php-restart", desc: "Restart PHP and reset OPcache again" }
-            post-release:
-            post-deploy:
         production:
             user: get-prod
             from: ./* ./.env

@@ -26,7 +26,6 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Exception;
 
 class LoginController extends AbstractController
 {
@@ -51,6 +50,6 @@ class LoginController extends AbstractController
     public function logout(): void
     {
         // controller can be blank: it will never be called!
-        throw new Exception("Don't forget to activate logout in security.yaml");
+        throw new \Exception("Don't forget to activate logout in security.yaml");
     }
 }

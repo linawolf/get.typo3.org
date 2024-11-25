@@ -2,17 +2,6 @@ name: Deployment
 
 on:
   workflow_call:
-    inputs:
-      php_version:
-        description: 'PHP version to be used for the deployment.'
-        default: '8.2'
-        required: false
-        type: string
-      composer_version:
-        description: 'Composer version to be used for the deployment.'
-        default: '2'
-        required: false
-        type: string
     secrets:
       SSH_PRIVATE_KEY:
         required: true
@@ -20,20 +9,8 @@ on:
         required: true
 
 jobs:
-  print_inputs:
-    name: Print Inputs
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Print the inputs
-        run: |
-          echo PHP version: ${{ inputs.php_version }}
-          echo Composer version: ${{ inputs.composer_version }}
-
   deploy:
     name: Deploy
-    needs:
-      - print_inputs
     runs-on: ubuntu-latest
 
     steps:
@@ -48,14 +25,14 @@ jobs:
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add ~/.ssh/deploy_key
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout
 
       - name: Set up PHP Version
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ inputs.php_version }}
-          tools: composer:${{ inputs.composer_version }}, andres-montanez/magallanes
+          php-version: '8.2'
+          tools: andres-montanez/magallanes
 
       - name: Get Environment
         id: environment
@@ -69,7 +46,7 @@ jobs:
           composer global exec mage deploy ${{ steps.environment.outputs.target }}
 
       - name: Upload Logs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: deployment

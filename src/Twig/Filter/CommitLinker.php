@@ -34,7 +34,7 @@ class CommitLinker extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('commitlinker', fn (string $changeList): ?string => $this->linkCommits($changeList)),
+            new TwigFilter('commitlinker', fn(string $changeList): ?string => $this->linkCommits($changeList)),
         ];
     }
 
@@ -44,7 +44,7 @@ class CommitLinker extends AbstractExtension
 
         return preg_replace_callback(
             $pattern,
-            static fn (array $matches): string => sprintf(
+            static fn(array $matches): string => sprintf(
                 '<a href="https://github.com/typo3/typo3/commit/%1$s" target="_blank" rel="noopener">%1$s</a>',
                 $matches['commit']
             ),

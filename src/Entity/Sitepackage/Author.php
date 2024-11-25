@@ -26,12 +26,11 @@ namespace App\Entity\Sitepackage;
 use JMS\Serializer\Annotation as Serializer;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Validator\Constraints as Assert;
-use JsonSerializable;
 
 /**
  * Author.
  */
-class Author implements JsonSerializable
+class Author implements \JsonSerializable
 {
     #[Assert\NotBlank(message: "Please enter the authors' name.")]
     #[Assert\Length(min: 3)]

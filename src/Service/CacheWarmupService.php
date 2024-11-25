@@ -33,7 +33,6 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Exception;
 
 class CacheWarmupService implements CacheWarmerInterface
 {
@@ -85,7 +84,6 @@ class CacheWarmupService implements CacheWarmerInterface
 
         $this->warmUpMajorVersions();
 
-        /** @noRector */
         $versions = $this->releases->findAll();
         $routes = [
             'release_show',
@@ -115,7 +113,6 @@ class CacheWarmupService implements CacheWarmerInterface
 
     private function warmUpActiveMajorVersions(): void
     {
-        /** @noRector */
         $versions = $this->majorVersions->findAllActive();
         $routes = [
             'majorVersion_show',
@@ -125,7 +122,6 @@ class CacheWarmupService implements CacheWarmerInterface
 
     private function warmUpMajorVersions(): void
     {
-        /** @noRector */
         $versions = $this->majorVersions->findAll();
         $routes = [
             'app_api_majorversion_releases_getreleasesbymajorversion',
@@ -159,7 +155,7 @@ class CacheWarmupService implements CacheWarmerInterface
 
                 try {
                     $promise->wait();
-                } catch (Exception $exception) {
+                } catch (\Exception $exception) {
                     $this->logger->warning($exception->getMessage(), $exception->getTrace());
                 }
             }

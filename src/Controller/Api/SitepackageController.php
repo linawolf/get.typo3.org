@@ -38,8 +38,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validation;
 
-use function count;
-
 #[Route(path: '/api/v1/sitepackage', defaults: ['_format' => 'json'])]
 class SitepackageController extends AbstractController
 {
@@ -81,8 +79,8 @@ class SitepackageController extends AbstractController
             ->enableAttributeMapping()
             ->getValidator();
         $errors = $validator->validate($object);
-        if (count($errors) > 0) {
-            $errorsString = implode("\n", array_map(static fn (ConstraintViolationInterface $x) => $x->getMessage(), (array)$errors));
+        if (\count($errors) > 0) {
+            $errorsString = implode("\n", array_map(static fn(ConstraintViolationInterface $x) => $x->getMessage(), (array)$errors));
             throw new BadRequestHttpException($errorsString);
         }
     }

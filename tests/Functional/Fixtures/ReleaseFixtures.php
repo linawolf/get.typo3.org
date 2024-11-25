@@ -29,9 +29,6 @@ use App\Enum\ReleaseTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use DateTime;
-use DateTimeInterface;
-use RuntimeException;
 
 final class ReleaseFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -78,13 +75,13 @@ final class ReleaseFixtures extends Fixture implements DependentFixtureInterface
             $fakeVersion = $ltsVersionData;
             $fakeVersion[2] = $i;
             $version = implode('.', $fakeVersion);
-            $date = DateTime::createFromFormat(
-                DateTimeInterface::ATOM,
-                $majorVersion->getReleaseDate()->modify('+' . ($i * 2) . ' months')->format(DateTimeInterface::ATOM)
+            $date = \DateTime::createFromFormat(
+                \DateTimeInterface::ATOM,
+                $majorVersion->getReleaseDate()->modify('+' . ($i * 2) . ' months')->format(\DateTimeInterface::ATOM)
             );
 
             if ($date === false) {
-                throw new RuntimeException('Can not calculate date.', 1_624_354_915);
+                throw new \RuntimeException('Can not calculate date.', 1_624_354_915);
             }
 
             $release = new Release();

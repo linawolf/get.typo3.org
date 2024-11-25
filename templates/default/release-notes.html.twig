@@ -14,7 +14,7 @@
 
     {% if currentVersion.current.releaseNotes.legacyContent %}
         {% frame %}
-            {{ currentVersion.current.releaseNotes.legacyContent|escape('html')|parsedown|changehighlighter|raw }}
+            {{ currentVersion.current.releaseNotes.legacyContent|escape('html')|markdown|changehighlighter|raw }}
         {% endframe %}
         {% include 'default/partials/version/signatures.html.twig' with currentVersion only %}
     {% else %}

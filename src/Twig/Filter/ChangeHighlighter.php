@@ -36,7 +36,7 @@ class ChangeHighlighter extends AbstractExtension
         return [
             new TwigFilter(
                 'changehighlighter',
-                fn (string $changeList): ?string => $this->highlightChanges($changeList)
+                fn(string $changeList): ?string => $this->highlightChanges($changeList)
             ),
         ];
     }
@@ -48,7 +48,7 @@ class ChangeHighlighter extends AbstractExtension
             $pattern,
             static function ($matches): string {
                 $cssClass = 'change-' . strtolower($matches['type']);
-                if (isset($matches['important']) && $matches['important'] !== '') {
+                if ($matches['important'] !== '') {
                     $cssClass .= ' change-important';
                 }
 
