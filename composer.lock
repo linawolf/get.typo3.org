@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7339b545be1829fa90a1f0746acd4204",
+    "content-hash": "c5a096b145d45d2dbba83095ae89c16d",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -8587,40 +8587,40 @@
         },
         {
             "name": "t3g/symfony-template-bundle",
-            "version": "3.5.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3GmbH/symfony-template-bundle.git",
-                "reference": "1b7c44d166110517119f3d53a45dcf746b0fd9ce"
+                "reference": "15f3fbe51efedfe9d9609d379afe76c448dafb48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3GmbH/symfony-template-bundle/zipball/1b7c44d166110517119f3d53a45dcf746b0fd9ce",
-                "reference": "1b7c44d166110517119f3d53a45dcf746b0fd9ce",
+                "url": "https://api.github.com/repos/TYPO3GmbH/symfony-template-bundle/zipball/15f3fbe51efedfe9d9609d379afe76c448dafb48",
+                "reference": "15f3fbe51efedfe9d9609d379afe76c448dafb48",
                 "shasum": ""
             },
             "require": {
                 "erusev/parsedown": "^1.7 || 2.*.*@dev",
                 "knplabs/knp-menu-bundle": "^2.2 || ^3.0",
                 "knplabs/knp-paginator-bundle": "^3.0 || ^4.0 || ^5.0",
-                "php": "^7.4 || ^8.0",
+                "php": "^8.1",
                 "setasign/fpdi": "^2.3",
-                "symfony/asset": "^4.4 || ^5.4 || ^6.0",
-                "symfony/dependency-injection": "^4.4 || ^5.4 || ^6.0",
+                "symfony/asset": "^5.4 || ^6.4",
+                "symfony/dependency-injection": "^5.4 || ^6.4",
                 "symfony/deprecation-contracts": "^2.5 || ^3.0",
-                "symfony/form": "^4.4 || ^5.4 || ^6.0",
-                "symfony/framework-bundle": "^4.4 || ^5.4 || ^6.0",
-                "symfony/http-kernel": "^4.4 || ^5.4 || ^6.0",
-                "symfony/security-bundle": "^4.4 || ^5.4 || ^6.0",
-                "symfony/translation": "^4.4 || ^5.4 || ^6.0",
-                "symfony/twig-bundle": "^4.4 || ^5.4 || ^6.0",
-                "tecnickcom/tcpdf": "^6.4",
+                "symfony/form": "^5.4 || ^6.4",
+                "symfony/framework-bundle": "^5.4 || ^6.4",
+                "symfony/http-kernel": "^5.4 || ^6.4",
+                "symfony/security-bundle": "^5.4 || ^6.4",
+                "symfony/translation": "^5.4 || ^6.4",
+                "symfony/twig-bundle": "^5.4 || ^6.4",
+                "tecnickcom/tcpdf": "^6.7",
                 "twig/twig": "^3.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "overtrue/phplint": "^3.0 || ^4.0",
-                "symfony/phpunit-bridge": "^4.4 || ^5.4 || ^6.0",
+                "symfony/phpunit-bridge": "^5.4 || ^6.4",
                 "symfony/webpack-encore-bundle": "^1.13"
             },
             "suggest": {
@@ -8650,9 +8650,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TYPO3GmbH/symfony-template-bundle/issues",
-                "source": "https://github.com/TYPO3GmbH/symfony-template-bundle/tree/3.5.0"
+                "source": "https://github.com/TYPO3GmbH/symfony-template-bundle/tree/4.0.0"
             },
-            "time": "2022-12-02T09:20:56+00:00"
+            "time": "2024-09-09T08:19:22+00:00"
         },
         {
             "name": "t3g/symfony-usercentrics-bundle",
