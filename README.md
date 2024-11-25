@@ -115,8 +115,7 @@ Additional configuration for the webserver can be found in the folder `cnf`.
 
 #### Production
 
-![CI Production](https://github.com/TYPO3/get.typo3.org/workflows/Integration%20(CI)/badge.svg?branch=production)
-![CD Production](https://github.com/TYPO3/get.typo3.org/workflows/Deployment%20(CD)/badge.svg?branch=production)
+![CI Production](https://github.com/TYPO3/get.typo3.org/workflows/Continuous%20Integration/badge.svg?branch=develop)
 
 All pushs to the branch `production` are automatically deployed to the production
 site at [get.typo3.org](https://get.typo3.org) or [composer.typo3.org](https://composer.typo3.org).
