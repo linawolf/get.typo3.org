@@ -55,8 +55,6 @@ class SitepackageType extends AbstractType
                     '12.4' => 12.4,
                     '11.5' => 11.5,
                     '10.4' => 10.4,
-                    '9.5' => 9.5,
-                    '8.7' => 8.7,
                 ],
                 'expanded' => true,
             ])
