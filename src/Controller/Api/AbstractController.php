@@ -33,23 +33,29 @@ use App\Utility\VersionUtility;
 use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
-use JMS\Serializer\SerializerInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormErrorIterator;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
     public function __construct(
-        private \Symfony\Contracts\Cache\TagAwareCacheInterface $cache,
-        private \App\Service\CacheService $cacheService,
-        private \JMS\Serializer\SerializerInterface $serializer,
-        private \Doctrine\Persistence\ManagerRegistry $managerRegistry,
-        private \App\Repository\MajorVersionRepository $majorVersions,
-        private \App\Repository\RequirementRepository $requirements,
-        private \App\Repository\ReleaseRepository $releases,
-        private \Symfony\Component\Validator\Validator\ValidatorInterface $validator,
+        private TagAwareCacheInterface $cache,
+        private CacheService $cacheService,
+        private SerializerInterface $serializer,
+        private ManagerRegistry $managerRegistry,
+        private MajorVersionRepository $majorVersions,
+        private RequirementRepository $requirements,
+        private ReleaseRepository $releases,
+        private ValidatorInterface $validator
     ) {}
 
     protected function getCache(): TagAwareCacheInterface
@@ -212,5 +218,41 @@ abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Contro
         }
 
         return $result;
+    }
+
+    /**
+     * @template T
+     *
+     * @param FormInterface<T> $form
+     */
+    protected function sendErroneousResponse(FormInterface $form): Response
+    {
+        return new JsonResponse([
+            'errors' => $this->getErrors($form),
+        ], Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @template T
+     *
+     * @param FormInterface<T> $form
+     *
+     * @return array<int|string, mixed>
+     */
+    private function getErrors(FormInterface $form): array
+    {
+        $errors = [];
+        /** @var FormErrorIterator<FormError> $formErrors */
+        $formErrors = $form->getErrors();
+        foreach ($formErrors as $error) {
+            $errors[] = $error->getMessage();
+        }
+        foreach ($form->all() as $childForm) {
+            if (($childForm instanceof FormInterface) && count($childErrors = $this->getErrors($childForm)) > 0) {
+                $errors[$childForm->getName()] = $childErrors;
+            }
+        }
+
+        return $errors;
     }
 }

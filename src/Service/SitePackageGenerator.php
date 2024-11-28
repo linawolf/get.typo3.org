@@ -23,13 +23,13 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Sitepackage;
+use App\Entity\SitePackage;
 use App\Utility\FileUtility;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
-class SitepackageGenerator
+class SitePackageGenerator
 {
     protected KernelInterface $kernel;
     protected string $zipPath;
@@ -40,7 +40,7 @@ class SitepackageGenerator
         $this->kernel = $kernel;
     }
 
-    public function create(Sitepackage $package): void
+    public function create(SitePackage $package): void
     {
         $extensionKey = $package->getExtensionKey();
         $this->filename = $extensionKey . '.zip';
@@ -53,8 +53,7 @@ class SitepackageGenerator
         $fileList = FileUtility::listDirectory($sourceDir);
 
         $zipFile = new \ZipArchive();
-        $opened = $zipFile->open($this->zipPath, \ZipArchive::CREATE);
-        if ($opened === true) {
+        if ($zipFile->open($this->zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
             foreach ($fileList as $file) {
                 if ($file !== $this->zipPath && file_exists($file)) {
                     $baseFileName = $this->createRelativeFilePath($file, $sourceDir);
@@ -83,7 +82,7 @@ class SitepackageGenerator
         return $this->filename;
     }
 
-    private function getFileContent(string $file, Sitepackage $package): string
+    private function getFileContent(string $file, SitePackage $package): string
     {
         $content = file_get_contents($file);
         $fileUniqueId = uniqid('file');

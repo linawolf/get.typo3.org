@@ -23,45 +23,62 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\Sitepackage;
+use App\Entity\SitePackage;
+use App\Service\SitePackageBaseService;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SitepackageType extends AbstractType
+class SitePackageType extends AbstractType
 {
+    private SitePackageBaseService $sitePackageBaseService;
+
+    public function __construct(SitePackageBaseService $sitePackageBaseService)
+    {
+        $this->sitePackageBaseService = $sitePackageBaseService;
+    }
+
     /**
      * @param array<string, mixed> $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $sitePackageBaseService = $this->sitePackageBaseService;
+
         $builder
             ->setAction($options['action'])
-            ->add('basePackage', ChoiceType::class, [
+            ->add('base_package', ChoiceType::class, [
                 'label' => 'Base Package',
-                'choices' => [
-                    'Bootstrap Package' => 'bootstrap_package',
-                    'Fluid Styled Content' => 'fluid_styled_content',
+                'choice_loader' => new CallbackChoiceLoader(static function () use ($sitePackageBaseService): array {
+                    return $sitePackageBaseService->getBasePackageChoices();
+                }),
+                'documentation' => [
+                    'example' => 'bootstrap_package',
                 ],
                 'expanded' => true,
             ])
-            ->add('typo3Version', ChoiceType::class, [
+            ->add('typo3_version', ChoiceType::class, [
                 'label' => 'TYPO3 Version',
-                'choices' => [
-                    '13.4 (Beta)' => 13.4,
-                    '12.4' => 12.4,
-                    '11.5' => 11.5,
-                    '10.4' => 10.4,
+                'choice_loader' => new CallbackChoiceLoader(static function () use ($sitePackageBaseService): array {
+                    return $sitePackageBaseService->getBasePackageVersionChoices();
+                }),
+                'documentation' => [
+                    'type' => 'float',
+                    'example' => 13.4,
                 ],
                 'expanded' => true,
             ])
             ->add('title', TextType::class, [
                 'attr' => [
                     'autocomplete' => 'off',
-                    'placeholder' => 'My Sitepackage',
+                    'placeholder' => 'My Site Package',
+                ],
+                'documentation' => [
+                    'example' => 'My SitePackage',
                 ],
             ])
             ->add('description', TextareaType::class, [
@@ -69,10 +86,13 @@ class SitepackageType extends AbstractType
                 'empty_data' => '',
                 'attr' => [
                     'autocomplete' => 'off',
-                    'placeholder' => 'Optional description for the use of this sitepackage',
+                    'placeholder' => 'Optional description for the use of this Site Package',
+                ],
+                'documentation' => [
+                    'example' => 'Project Configuration for Client',
                 ],
             ])
-            ->add('repositoryUrl', TextType::class, [
+            ->add('repository_url', TextType::class, [
                 'label' => 'Repository URL',
                 'required' => false,
                 'empty_data' => '',
@@ -80,14 +100,19 @@ class SitepackageType extends AbstractType
                     'autocomplete' => 'off',
                     'placeholder' => 'https://github.com/username/my_sitepackage',
                 ],
+                'documentation' => [
+                    'example' => 'https://github.com/FriendsOfTYPO3/introduction',
+                ],
             ])
-            ->add('author', AuthorType::class);
+            ->add('author', AuthorType::class, [
+                'csrf_protection' => false,
+            ]);
     }
 
     public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Sitepackage::class,
+            'data_class' => SitePackage::class,
         ]);
     }
 

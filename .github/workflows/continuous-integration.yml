@@ -1,7 +1,11 @@
-name: Continuous Integration / Deployment (CI/CD)
+name: Continuous Integration
 
 on:
   push:
+    branches-ignore:
+      - 'task/**'
+      - 'bugfix/**'
+      - 'feature/**'
   pull_request:
 
 jobs:
