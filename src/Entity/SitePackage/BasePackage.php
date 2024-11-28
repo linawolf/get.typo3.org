@@ -90,4 +90,15 @@ class BasePackage
 
         return $this;
     }
+
+    public function hasVersionSupport(float $version): bool
+    {
+        $result = $this->getVersions()->filter(function (BasePackageVersion $basePackageVersion) use ($version) {
+            return $basePackageVersion->getVersion() === $version;
+        });
+        $resultArray = $result->toArray();
+        $result = reset($resultArray);
+
+        return $result === false ? false : true;
+    }
 }

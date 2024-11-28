@@ -58,6 +58,17 @@ class SitePackageBaseService
         return $data;
     }
 
+    public function getPackage(string $identifier): ?BasePackage
+    {
+        $result = $this->getPackages()->filter(function (BasePackage $package) use ($identifier) {
+            return $package->getIdentifier() === $identifier;
+        });
+        $resultArray = $result->toArray();
+        $result = reset($resultArray);
+
+        return $result === false ? null : $result;
+    }
+
     /**
      * @return array<string, string>
      */

@@ -24,19 +24,16 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Entity\SitePackage\Author;
+use App\Validator\BasePackageVersionSupport;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * SitePackage.
- */
+#[BasePackageVersionSupport]
 class SitePackage implements \JsonSerializable
 {
     #[Assert\NotBlank]
-    #[Assert\Choice(['bootstrap_package', 'fluid_styled_content'])]
     private string $basePackage = 'bootstrap_package';
 
     #[Assert\NotBlank]
-    #[Assert\Choice([10.4, 11.5, 12.4, 13.4])]
     private float $typo3Version = 13.4;
 
     private string $vendorName;
