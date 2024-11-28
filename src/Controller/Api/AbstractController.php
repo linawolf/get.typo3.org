@@ -37,19 +37,20 @@ use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
     public function __construct(
-        private \Symfony\Contracts\Cache\TagAwareCacheInterface $cache,
-        private \App\Service\CacheService $cacheService,
-        private \JMS\Serializer\SerializerInterface $serializer,
-        private \Doctrine\Persistence\ManagerRegistry $managerRegistry,
-        private \App\Repository\MajorVersionRepository $majorVersions,
-        private \App\Repository\RequirementRepository $requirements,
-        private \App\Repository\ReleaseRepository $releases,
-        private \Symfony\Component\Validator\Validator\ValidatorInterface $validator,
+        private TagAwareCacheInterface $cache,
+        private CacheService $cacheService,
+        private SerializerInterface $serializer,
+        private ManagerRegistry $managerRegistry,
+        private MajorVersionRepository $majorVersions,
+        private RequirementRepository $requirements,
+        private ReleaseRepository $releases,
+        private ValidatorInterface $validator,
     ) {}
 
     protected function getCache(): TagAwareCacheInterface
