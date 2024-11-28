@@ -15,8 +15,8 @@ database:
 hooks:
     post-start:
         - exec: cp .env.ddev .env.local
-        - exec: /mnt/ddev_config/scripts/setup-db
         - composer: install
+        - exec: /mnt/ddev_config/scripts/setup-db
 omit_containers: [db]
 use_dns_when_possible: true
 timezone: Europe/Zurich

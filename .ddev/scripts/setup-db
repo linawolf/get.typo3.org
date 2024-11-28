@@ -1,11 +1,6 @@
 #!/bin/bash
 
-if [ "$APP_ENV" = "test" ]; then
-    DBFILE='/var/www/html/var/test.db'
-    test -f $DBFILE && rm $DBFILE && echo 'Database file removed'
-else
-    DBFILE=`echo $DATABASE_URL|sed 's@sqlite:\/\/\/%kernel\.project_dir%@'"/var/www/html"'@'`
-fi
+DBFILE='/var/www/html/var/ddev.db'
 
 echo 'Database file: '$DBFILE
 
@@ -13,6 +8,7 @@ if [ ! -f $DBFILE ]; then
     echo "No database found, creating a new one including the fixtures..."
 
     php ./bin/console doctrine:schema:create --no-interaction
+    php ./bin/console doctrine:migrations:sync-metadata-storage --no-interaction
     php ./bin/console doctrine:migrations:version --add --all --no-interaction
     php ./bin/console doctrine:fixtures:load --no-interaction
 else
