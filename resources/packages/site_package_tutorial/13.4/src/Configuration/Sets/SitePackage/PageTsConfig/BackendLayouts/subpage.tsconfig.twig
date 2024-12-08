@@ -4,8 +4,8 @@
 mod {
     web_layout {
         BackendLayouts {
-            example {
-                title = LLL:EXT:{{ package.extensionKey }}/Resources/Private/Language/locallang_be.xlf:backend_layout.example
+            Subpage {
+                title = LLL:EXT:{{ package.extensionKey }}/Resources/Private/Language/locallang_be.xlf:backend_layout.subpage
                 config {
                     backend_layout {
                         colCount = 2
@@ -15,9 +15,10 @@ mod {
                                 columns {
                                     1 {
                                         name = LLL:EXT:{{ package.extensionKey }}/Resources/Private/Language/locallang_be.xlf:backend_layout.column.stage
-                                        colPos = 0
-                                        identifier = stage
+                                        colPos = 1
                                         colspan = 2
+                                        identifier = stage
+                                        slideMode = slide
                                     }
                                 }
                             }
@@ -31,15 +32,15 @@ mod {
                                     2 {
                                         name = LLL:EXT:{{ package.extensionKey }}/Resources/Private/Language/locallang_be.xlf:backend_layout.column.right
                                         colPos = 2
-                                        identifier = right
-                                        slideMode = slide
+                                        identifier = sidebar
+                                        slideMode = collectReverse
                                     }
                                 }
                             }
                         }
                     }
                 }
-                icon = EXT:{{ package.extensionKey }}/Resources/Public/Icons/BackendLayouts/example.svg
+                icon = EXT:{{ package.extensionKey }}/Resources/Public/Icons/BackendLayouts/subpage.svg
             }
         }
     }
