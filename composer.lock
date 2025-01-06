@@ -8466,16 +8466,16 @@
         },
         {
             "name": "t3g/symfony-template-bundle",
-            "version": "4.0.0",
+            "version": "4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3GmbH/symfony-template-bundle.git",
-                "reference": "15f3fbe51efedfe9d9609d379afe76c448dafb48"
+                "reference": "f2d16c04ac3061f444c15ded839a868f2e16629e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3GmbH/symfony-template-bundle/zipball/15f3fbe51efedfe9d9609d379afe76c448dafb48",
-                "reference": "15f3fbe51efedfe9d9609d379afe76c448dafb48",
+                "url": "https://api.github.com/repos/TYPO3GmbH/symfony-template-bundle/zipball/f2d16c04ac3061f444c15ded839a868f2e16629e",
+                "reference": "f2d16c04ac3061f444c15ded839a868f2e16629e",
                 "shasum": ""
             },
             "require": {
@@ -8529,9 +8529,9 @@
             ],
             "support": {
                 "issues": "https://github.com/TYPO3GmbH/symfony-template-bundle/issues",
-                "source": "https://github.com/TYPO3GmbH/symfony-template-bundle/tree/4.0.0"
+                "source": "https://github.com/TYPO3GmbH/symfony-template-bundle/tree/4.0.3"
             },
-            "time": "2024-09-09T08:19:22+00:00"
+            "time": "2025-01-06T12:54:57+00:00"
         },
         {
             "name": "t3g/symfony-usercentrics-bundle",
