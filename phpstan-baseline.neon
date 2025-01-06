@@ -91,7 +91,7 @@ parameters:
 			path: src/Controller/DefaultController.php
 
 		-
-			message: '#^Binary operation "\." between ''https\://typo3…'' and mixed results in an error\.$#'
+			message: '#^Binary operation "\." between ''https\://cdn\.typo3…'' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
 			path: src/Controller/DownloadController.php
