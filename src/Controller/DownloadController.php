@@ -202,7 +202,7 @@ final class DownloadController extends AbstractController
                 }
 
                 return [
-                    'url'     => 'https://typo3.azureedge.net/typo3/' .
+                    'url'     => 'https://cdn.typo3.com/typo3/' .
                                  $version .
                                  '/' .
                                  $package .
